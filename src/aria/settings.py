@@ -154,6 +154,18 @@ class ModelsConfig(BaseModel):
     profiles: dict[str, ModelProfile]
 
 
+class ChatsConfig(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    # Until authentication is added, every request is attributed to this one identity. Only safe on
+    # a trusted local machine.
+    unauthenticated_user_id: str = "local-user"
+    default_title: str = "New Chat"
+    max_title_length: int = Field(default=40, ge=4)
+    # Bounds the in-memory store, which is not persisted.
+    max_chats_per_owner: int = Field(default=200, ge=1)
+
+
 class DeploymentConfig(BaseModel):
     """The YAML deployment file. Unknown sections are rejected so typos surface at startup."""
 
@@ -166,6 +178,7 @@ class DeploymentConfig(BaseModel):
     models: ModelsConfig
     catalog: CatalogConfig = CatalogConfig()
     prompts: PromptsConfig = PromptsConfig()
+    chats: ChatsConfig = ChatsConfig()
     # The catalog and the prompts may each live in their own file, relative to this one.
     catalog_file: Path | None = None
     prompts_file: Path | None = None

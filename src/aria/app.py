@@ -9,8 +9,9 @@ from contextlib import asynccontextmanager
 import httpx
 from fastapi import FastAPI
 
-from aria.api import health
+from aria.api import chats, health
 from aria.catalog.service import CatalogService
+from aria.chats.store import InMemoryChatStore
 from aria.preflight import run_preflight
 from aria.settings import Settings, get_settings
 
@@ -62,5 +63,8 @@ def create_app(
     app.state.preflight_report = None
     app.state.preflight_scheduled = preflight_on_startup
     app.state.catalog_service = catalog_service
+    # Not persisted yet: chats live in memory until the chats database store is added.
+    app.state.chat_store = InMemoryChatStore(settings.deployment.chats.max_chats_per_owner)
     app.include_router(health.router)
+    app.include_router(chats.router)
     return app

@@ -1,1 +1,1 @@
-"""Phase 2: JWT validation, revocation markers and the caller's identity and roles."""
+"""The caller's identity. Authentication (JWT, revocation) is not built yet; see caller.py."""
