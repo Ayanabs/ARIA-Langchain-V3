@@ -1,0 +1,5 @@
+# Bindings for the tools in tools/hr_edu_levels_des.py.
+fetchAllHrEduLevelsDes:
+  operation:
+    method: get
+    path: /api/hr-edu-levels-des

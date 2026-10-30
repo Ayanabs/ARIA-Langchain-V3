@@ -1,0 +1,5 @@
+# Bindings for the tools in tools/sa_location.py.
+fetchAllSaLocations:
+  operation:
+    method: get
+    path: /api/sa-locations

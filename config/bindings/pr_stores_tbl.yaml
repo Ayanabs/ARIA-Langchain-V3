@@ -1,0 +1,13 @@
+# Bindings for the tools in tools/pr_stores_tbl.py.
+fetchAllPrStoresTbl:
+  operation:
+    method: get
+    path: /api/pr-stores
+fetchPrStoresTblBySerialNo:
+  operation:
+    method: get
+    path: /api/pr-stores/serial-no/{serialNo}
+fetchPrStoresTblByStCode:
+  operation:
+    method: get
+    path: /api/pr-stores/st-code/{stCode}

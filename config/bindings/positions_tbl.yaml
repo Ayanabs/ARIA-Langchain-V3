@@ -1,0 +1,27 @@
+# Bindings for the tools in tools/positions_tbl.py.
+fetchAllPositions:
+  operation:
+    method: get
+    path: /api/positions
+fetchPositionByEmpNo:
+  operation:
+    method: get
+    path: /api/positions/{id}
+  parameters:
+    empNo: id
+fetchPositionsByCategoryCode:
+  operation:
+    method: get
+    path: /api/positions/category/{categoryCode}
+fetchPositionsByDesigCode:
+  operation:
+    method: get
+    path: /api/positions/designation/{desigCode}
+fetchPositionsByDivisionCode:
+  operation:
+    method: get
+    path: /api/positions/division/{divisionCode}
+fetchPositionsByPromoDate:
+  operation:
+    method: get
+    path: /api/positions/promotion-date/{promoDt}

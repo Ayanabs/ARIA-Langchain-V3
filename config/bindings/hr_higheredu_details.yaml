@@ -1,0 +1,20 @@
+# Bindings for the tools in tools/hr_higheredu_details.py.
+fetchAllHrHigherEduDetails:
+  operation:
+    method: get
+    path: /api/hr-higher-edu-details
+fetchHrHighereduDetailsByEmployee:
+  consumes:
+    employee_number:
+    - empNo
+  operation:
+    method: get
+    path: /api/hr-higher-edu-details/employee/{empNo}
+fetchHrHighereduDetailsByHigherEduLevel:
+  operation:
+    method: get
+    path: /api/hr-higher-edu-details/higher-education-level/{higherEduLevel}
+fetchHrHighereduDetailsBySubEduType:
+  operation:
+    method: get
+    path: /api/hr-higher-edu-details/sub-education-type/{subEduType}

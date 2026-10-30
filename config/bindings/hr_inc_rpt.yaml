@@ -1,0 +1,21 @@
+# Bindings for the tools in tools/hr_inc_rpt.py.
+fetchAllHrIncrementReports:
+  operation:
+    method: get
+    path: /api/hr-increment-reports
+fetchHrIncrementReportsByDateRange:
+  operation:
+    method: get
+    path: /api/hr-increment-reports
+fetchHrIncrementReportsByDesignation:
+  operation:
+    method: get
+    path: /api/hr-increment-reports/designation/{designation}
+fetchHrIncrementReportsByIncrementDate:
+  operation:
+    method: get
+    path: /api/hr-increment-reports/increment-date/{incDate}
+fetchHrIncrementReportsByIncrementValue:
+  operation:
+    method: get
+    path: /api/hr-increment-reports/increment-value/{incValue}

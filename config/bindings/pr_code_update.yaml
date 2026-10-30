@@ -1,0 +1,13 @@
+# Bindings for the tools in tools/pr_code_update.py.
+fetchAllPrCodeUpdates:
+  operation:
+    method: get
+    path: /api/pr-code-updates
+fetchPrCodeUpdatesByAcPlCode:
+  operation:
+    method: get
+    path: /api/pr-code-updates/ac-pl-code/{aCPlCode}
+fetchPrCodeUpdatesByPRCode:
+  operation:
+    method: get
+    path: /api/pr-code-updates/pr-code/{pRCode}

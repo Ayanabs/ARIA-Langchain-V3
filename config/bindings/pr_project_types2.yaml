@@ -1,0 +1,5 @@
+# Bindings for the tools in tools/pr_project_types2.py.
+fetchAllPrProjectTypes2:
+  operation:
+    method: get
+    path: /api/pr-project-types-2

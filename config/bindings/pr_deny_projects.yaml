@@ -1,0 +1,13 @@
+# Bindings for the tools in tools/pr_deny_projects.py.
+fetchAllPrDenyProjects:
+  operation:
+    method: get
+    path: /api/pr-deny-projects
+fetchPrDenyProjectsByPCode:
+  operation:
+    method: get
+    path: /api/pr-deny-projects/p-code/{pCode}
+fetchPrDenyProjectsByReason:
+  operation:
+    method: get
+    path: /api/pr-deny-projects/reason/{reason}

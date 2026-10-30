@@ -1,0 +1,17 @@
+# Bindings for the tools in tools/hr_division_tbl.py.
+fetchAllHrDivisions:
+  operation:
+    method: get
+    path: /api/hr-divisions
+fetchHrDivisionsByCategory:
+  operation:
+    method: get
+    path: /api/hr-divisions/category/{category}
+fetchHrDivisionsByShCode:
+  operation:
+    method: get
+    path: /api/hr-divisions/code/{shCode}
+searchHrDivisionsByName:
+  operation:
+    method: get
+    path: /api/hr-divisions/search

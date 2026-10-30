@@ -1,0 +1,13 @@
+# Bindings for the tools in tools/pr_change_history.py.
+fetchPrChangeHistoryByApCodeYear:
+  operation:
+    method: get
+    path: /api/pr-change-history/ap-code-year/{apCodeYear}
+fetchPrChangeHistoryByNewApCode:
+  operation:
+    method: get
+    path: /api/pr-change-history/new-ap-code/{newApCode}
+fetchPrChangeHistoryBySerialNo:
+  operation:
+    method: get
+    path: /api/pr-change-history/serial-no/{serialNo}

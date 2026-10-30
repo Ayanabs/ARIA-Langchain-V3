@@ -1,0 +1,13 @@
+# Bindings for the tools in tools/hr_project_types.py.
+fetchAllHrProjectTypes:
+  operation:
+    method: get
+    path: /api/hr-project-types
+fetchHrProjectTypesByDescription:
+  operation:
+    method: get
+    path: /api/hr-project-types/description/{ptDescription}
+fetchHrProjectTypesByShortDescription:
+  operation:
+    method: get
+    path: /api/hr-project-types/short-description/{ptShortDes}

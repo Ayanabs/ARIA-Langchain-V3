@@ -1,0 +1,52 @@
+# Bindings for the tools in tools/hr_projects.py.
+fetchAllHrProjects:
+  operation:
+    method: get
+    path: /api/hr-projects
+fetchHrProjectsByApCode:
+  operation:
+    method: get
+    path: /api/hr-projects/apcode/{apcode}
+fetchHrProjectsByClient:
+  operation:
+    method: get
+    path: /api/hr-projects/client/{cname}
+fetchHrProjectsByClosedStatus:
+  operation:
+    method: get
+    path: /api/hr-projects/closed/{pClose}
+fetchHrProjectsByCode:
+  operation:
+    method: get
+    path: /api/hr-projects/code/{code}
+fetchHrProjectsByEmployee:
+  consumes:
+    employee_number:
+    - empNo
+  operation:
+    method: get
+    path: /api/hr-projects/employee/{empNo}
+fetchHrProjectsByPType:
+  operation:
+    method: get
+    path: /api/hr-projects/ptype/{ptype}
+fetchHrProjectsByProjectName:
+  operation:
+    method: get
+    path: /api/hr-projects/name/{pname}
+fetchHrProjectsByProjectType:
+  operation:
+    method: get
+    path: /api/hr-projects/project-type/{ptCode}
+fetchHrProjectsBySkillCode:
+  operation:
+    method: get
+    path: /api/hr-projects/skill-code/{skCode}
+fetchHrProjectsByStatus:
+  operation:
+    method: get
+    path: /api/hr-projects/status/{confirm}
+fetchHrProjectsByYear:
+  operation:
+    method: get
+    path: /api/hr-projects/year/{year}

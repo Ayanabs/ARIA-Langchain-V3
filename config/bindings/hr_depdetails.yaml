@@ -1,0 +1,20 @@
+# Bindings for the tools in tools/hr_depdetails.py.
+fetchAllHrDepDetails:
+  operation:
+    method: get
+    path: /api/hr-dep-details
+fetchHrDepDetailsByEmployee:
+  consumes:
+    employee_number:
+    - empNo
+  operation:
+    method: get
+    path: /api/hr-dep-details/employee/{empNo}
+fetchHrDepDetailsByRelationship:
+  operation:
+    method: get
+    path: /api/hr-dep-details/relationship/{relationship}
+searchHrDepDetailsByName:
+  operation:
+    method: get
+    path: /api/hr-dep-details/search

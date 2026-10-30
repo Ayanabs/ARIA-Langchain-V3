@@ -1,0 +1,17 @@
+# Bindings for the tools in tools/pr_extend.py.
+fetchAllPrExtends:
+  operation:
+    method: get
+    path: /api/pr-extends
+fetchPrExtendsByEdate:
+  operation:
+    method: get
+    path: /api/pr-extends/edate/{edate}
+fetchPrExtendsByExId:
+  operation:
+    method: get
+    path: /api/pr-extends/ex-id/{exId}
+fetchPrExtendsByExtendedDate:
+  operation:
+    method: get
+    path: /api/pr-extends/extended-date/{extendedDate}

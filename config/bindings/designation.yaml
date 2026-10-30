@@ -1,0 +1,5 @@
+# Bindings for the tools in tools/designation.py.
+fetchAllDesignations:
+  operation:
+    method: get
+    path: /api/designations

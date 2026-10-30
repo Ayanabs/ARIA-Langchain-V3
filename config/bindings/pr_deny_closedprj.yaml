@@ -1,0 +1,13 @@
+# Bindings for the tools in tools/pr_deny_closedprj.py.
+fetchAllPrDenyClosedprjs:
+  operation:
+    method: get
+    path: /api/pr-deny-closedprj
+fetchPrDenyClosedprjByCloseReason:
+  operation:
+    method: get
+    path: /api/pr-deny-closed-projects/close-reason/{closeReason}
+fetchPrDenyClosedprjByPCode:
+  operation:
+    method: get
+    path: /api/pr-deny-closed-projects/{pCode}

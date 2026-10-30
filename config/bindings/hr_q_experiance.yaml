@@ -1,0 +1,11 @@
+# Bindings for the tools in tools/hr_q_experiance.py.
+fetchAllHrQExperience:
+  operation:
+    method: get
+    path: /api/hr-q-experience
+fetchHrQExperienceByEmployeeId:
+  operation:
+    method: get
+    path: /api/hr-q-experience/employee/{empId}
+  parameters:
+    empNo: empId

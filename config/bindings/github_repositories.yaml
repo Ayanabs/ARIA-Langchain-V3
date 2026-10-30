@@ -1,0 +1,5 @@
+# Bindings for the tools in tools/github_repositories.py.
+list_repositories:
+  operation:
+    method: get
+    path: /api/github/repos

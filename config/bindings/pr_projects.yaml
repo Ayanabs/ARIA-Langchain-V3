@@ -1,0 +1,56 @@
+# Bindings for the tools in tools/pr_projects.py.
+fetchAllPrProjects:
+  operation:
+    method: get
+    path: /api/pr-projects
+fetchPrProjectBySerialNo:
+  operation:
+    method: get
+    path: /api/pr-projects/{serialNo}
+fetchPrProjectsByApCode:
+  operation:
+    method: get
+    path: /api/pr-projects/apcode/{apcode}
+fetchPrProjectsByClient:
+  operation:
+    method: get
+    path: /api/pr-projects/client/{cname}
+fetchPrProjectsByClosedStatus:
+  operation:
+    method: get
+    path: /api/pr-projects/closed/{pClose}
+fetchPrProjectsByCode:
+  operation:
+    method: get
+    path: /api/pr-projects/code/{code}
+fetchPrProjectsByEmployee:
+  consumes:
+    employee_number:
+    - empNo
+  operation:
+    method: get
+    path: /api/pr-projects/employee/{empNo}
+fetchPrProjectsByPType:
+  operation:
+    method: get
+    path: /api/pr-projects/ptype/{ptype}
+fetchPrProjectsByProjectName:
+  operation:
+    method: get
+    path: /api/pr-projects/name/{pname}
+fetchPrProjectsByProjectType:
+  operation:
+    method: get
+    path: /api/pr-projects/project-type/{ptCode}
+fetchPrProjectsBySkillCode:
+  operation:
+    method: get
+    path: /api/pr-projects/skill-code/{skCode}
+fetchPrProjectsByStatus:
+  operation:
+    method: get
+    path: /api/pr-projects/status/{confirm}
+fetchPrProjectsByYear:
+  operation:
+    method: get
+    path: /api/pr-projects/year/{year}

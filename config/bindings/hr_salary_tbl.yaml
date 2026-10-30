@@ -1,0 +1,29 @@
+# Bindings for the tools in tools/hr_salary_tbl.py.
+fetchAllHrSalaryTbls:
+  operation:
+    method: get
+    path: /api/hr-salary-table
+fetchHrSalaryTblBySalaryCode:
+  operation:
+    method: get
+    path: /api/hr-salary-table/salary-code/{salaryCode}
+fetchHrSalaryTblBySalaryGrade:
+  operation:
+    method: get
+    path: /api/hr-salary-table/salary-grade/{salaryGrade}
+fetchHrSalaryTblBySalaryIncrementAmount:
+  operation:
+    method: get
+    path: /api/hr-salary-table/salary-increment-amount/{salaryIncremntAmnt}
+fetchHrSalaryTblBySalaryIncrementYears:
+  operation:
+    method: get
+    path: /api/hr-salary-table/salary-increment-years/{salaryIncremntYrs}
+fetchHrSalaryTblBySalaryInitVal:
+  operation:
+    method: get
+    path: /api/hr-salary-table/salary-init-val/{salaryInitVal}
+fetchHrSalaryTblBySalaryScale:
+  operation:
+    method: get
+    path: /api/hr-salary-table/salary-scale/{salaryScale}

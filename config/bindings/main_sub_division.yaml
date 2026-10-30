@@ -1,0 +1,13 @@
+# Bindings for the tools in tools/main_sub_division.py.
+fetchAllMainSubDivisions:
+  operation:
+    method: get
+    path: /api/main-sub-divisions
+fetchMainSubDivisionsByChildDivCode:
+  operation:
+    method: get
+    path: /api/main-sub-divisions/child-div/{childDivCode}
+fetchMainSubDivisionsByMainDivCode:
+  operation:
+    method: get
+    path: /api/main-sub-divisions/main-div/{mainDivCode}

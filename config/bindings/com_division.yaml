@@ -1,0 +1,5 @@
+# Bindings for the tools in tools/com_division.py.
+fetchAllComDivisions:
+  operation:
+    method: get
+    path: /api/com-divisions

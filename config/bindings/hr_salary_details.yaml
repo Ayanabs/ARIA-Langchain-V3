@@ -1,0 +1,5 @@
+# Bindings for the tools in tools/hr_salary_details.py.
+fetchAllHrSalaryDetails:
+  operation:
+    method: get
+    path: /api/hr-salary-details

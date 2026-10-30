@@ -1,0 +1,13 @@
+# Bindings for the tools in tools/pr_project_apcode.py.
+fetchAllPrProjectApcodes:
+  operation:
+    method: get
+    path: /api/pr-project-ap-codes
+fetchPrProjectApcodesByApcode:
+  operation:
+    method: get
+    path: /api/pr-project-ap-codes/apcode/{apcode}
+fetchPrProjectApcodesByYear:
+  operation:
+    method: get
+    path: /api/pr-project-ap-codes/year/{year}

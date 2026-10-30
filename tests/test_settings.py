@@ -68,3 +68,26 @@ def test_shipped_example_environment_and_deployment_config_load_together():
         assert (
             role.profile.input_budget_tokens + role.profile.max_output_tokens <= role.profile.context_tokens
         )
+
+
+def test_catalog_can_live_in_its_own_file(write_config, tmp_path):
+    (tmp_path / "tools.yaml").write_text(
+        "modules: [example]\nkeys:\n  thing:\n    entity: Thing\n    fields: [code]\n    label: thing code\n",
+        encoding="utf-8",
+    )
+    env_path, config_path = write_config(config=deployment_config(catalog_file="tools.yaml"))
+
+    settings = load_settings(env_file=env_path, config_file=config_path)
+
+    assert settings.deployment.catalog.modules == ["example"]
+    assert settings.deployment.catalog.keys["thing"].fields == ["code"]
+
+
+def test_catalog_file_errors_name_that_file(write_config, tmp_path):
+    (tmp_path / "tools.yaml").write_text("modules: [example]\nunknown_section: 1\n", encoding="utf-8")
+    env_path, config_path = write_config(config=deployment_config(catalog_file="tools.yaml"))
+
+    with pytest.raises(ConfigError) as raised:
+        load_settings(env_file=env_path, config_file=config_path)
+
+    assert "tools.yaml" in raised.value.problems[0]

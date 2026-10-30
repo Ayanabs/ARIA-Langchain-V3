@@ -1,0 +1,5 @@
+# Bindings for the tools in tools/hr_desig_cadre.py.
+fetchAllHrDesigCadres:
+  operation:
+    method: get
+    path: /api/hr-desig-cadres

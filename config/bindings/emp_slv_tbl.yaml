@@ -1,0 +1,12 @@
+# Bindings for the tools in tools/emp_slv_tbl.py.
+fetchEmpShortLeavesByAttDtId:
+  operation:
+    method: get
+    path: /api/emp-short-leaves/date/{attDtId}
+fetchEmpShortLeavesByEmpNo:
+  consumes:
+    employee_number:
+    - empNo
+  operation:
+    method: get
+    path: /api/emp-short-leaves/employee/{empNo}

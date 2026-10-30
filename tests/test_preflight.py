@@ -5,7 +5,7 @@ import httpx
 import pytest
 
 from aria.preflight import CheckStatus, run_preflight, summarize_openapi
-from tests.conftest import TEST_ENV
+from tests.conftest import TEST_ENV, deployment_config, profile
 
 OPENAPI_DOCUMENT = {
     "openapi": "3.0.1",
@@ -146,3 +146,57 @@ def test_live_preflight_against_configured_servers():
 
     report = asyncio.run(run_preflight(load_settings()))
     assert report.status != CheckStatus.FAIL, report.to_dict()
+
+
+def llama_cpp_settings(make_settings, context_tokens=8192):
+    config = deployment_config(
+        models={
+            "profiles": {
+                "router-model": profile(provider="llama_cpp", context_tokens=context_tokens),
+                "writer-model": profile(provider="llama_cpp", context_tokens=context_tokens),
+            }
+        }
+    )
+    env = {key: value for key, value in TEST_ENV.items() if "NATIVE" not in key}
+    return make_settings(env=env, config=config)
+
+
+def llama_cpp_host(slot_context=16384, served=("router-model", "writer-model")):
+    def handle(request: httpx.Request) -> httpx.Response:
+        path = request.url.path
+        if path == "/v1/models":
+            return httpx.Response(200, json={"data": [{"id": name} for name in served]})
+        if path == "/props":
+            return httpx.Response(200, json={"default_generation_settings": {"n_ctx": slot_context}})
+        return FakeHosts().handle(request)
+
+    return httpx.MockTransport(handle)
+
+
+def test_llama_cpp_context_fits_the_host_slot(make_settings):
+    settings = llama_cpp_settings(make_settings)
+
+    report = asyncio.run(run_preflight(settings, transport=llama_cpp_host()))
+
+    check = _check(report, "model_context:tool")
+    assert check.status == CheckStatus.OK
+    assert check.data == {"model": "router-model", "requestedContext": 8192, "slotContext": 16384}
+    # llama.cpp needs no native API base; only Ollama does.
+    assert _check(report, "config").status != CheckStatus.FAIL
+
+
+def test_llama_cpp_context_larger_than_the_host_slot_fails(make_settings):
+    settings = llama_cpp_settings(make_settings, context_tokens=32768)
+
+    report = asyncio.run(run_preflight(settings, transport=llama_cpp_host(slot_context=16384)))
+
+    assert _check(report, "model_context:tool").status == CheckStatus.FAIL
+
+
+def test_llama_cpp_model_not_served_fails(make_settings):
+    settings = llama_cpp_settings(make_settings)
+
+    report = asyncio.run(run_preflight(settings, transport=llama_cpp_host(served=("writer-model",))))
+
+    assert _check(report, "model_context:tool").detail == "model is not served by the host"
+    assert _check(report, "model_context:synthesis").status == CheckStatus.OK

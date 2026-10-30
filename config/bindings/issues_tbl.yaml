@@ -1,0 +1,20 @@
+# Bindings for the tools in tools/issues_tbl.py.
+fetchAllIssues:
+  operation:
+    method: get
+    path: /api/issues
+fetchIssueByAttDtId:
+  operation:
+    method: get
+    path: /api/issues/{attDtId}
+fetchIssuesByEmpNo:
+  consumes:
+    employee_number:
+    - empNo
+  operation:
+    method: get
+    path: /api/issues/employee/{empNo}
+fetchIssuesByType:
+  operation:
+    method: get
+    path: /api/issues/type/{issueType}

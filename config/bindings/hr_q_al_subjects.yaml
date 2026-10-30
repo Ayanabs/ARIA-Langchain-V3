@@ -1,0 +1,9 @@
+# Bindings for the tools in tools/hr_q_al_subjects.py.
+fetchAllHrQALSubjects:
+  operation:
+    method: get
+    path: /api/hr-q-al-subjects
+fetchHrQALSubjectsBySubjectName:
+  operation:
+    method: get
+    path: /api/hr-q-al-subjects/name/{subName}

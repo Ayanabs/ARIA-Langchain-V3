@@ -1,0 +1,24 @@
+# Bindings for the tools in tools/hr_official_details.py.
+fetchAllHrOfficialDetails:
+  operation:
+    method: get
+    path: /api/hr-official-details
+fetchHrOfficialDetailsByCategory:
+  operation:
+    method: get
+    path: /api/hr-official-details/category/{category}
+fetchHrOfficialDetailsByDesignation:
+  operation:
+    method: get
+    path: /api/hr-official-details/designation/{desigCode}
+fetchHrOfficialDetailsByEmpNo:
+  consumes:
+    employee_number:
+    - empNo
+  operation:
+    method: get
+    path: /api/hr-official-details/{empNo}
+fetchHrOfficialDetailsByEmployeeStatus:
+  operation:
+    method: get
+    path: /api/hr-official-details/active/{empActive}

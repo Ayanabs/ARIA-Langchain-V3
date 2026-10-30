@@ -20,9 +20,15 @@ async def health(request: Request) -> dict:
             "status": report.status.value,
             "checks": {check.name: check.status.value for check in report.checks},
         }
+    catalog = state.catalog_service.catalog
     return {
         "status": "ok",
         "service": state.settings.deployment.service.name,
         "version": __version__,
         "preflight": preflight,
+        "catalog": {
+            "status": catalog.status,
+            "tools_ready": len(catalog.tools),
+            "tools_unavailable": len(catalog.unavailable),
+        },
     }

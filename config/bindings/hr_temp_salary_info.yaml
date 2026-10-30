@@ -1,0 +1,28 @@
+# Bindings for the tools in tools/hr_temp_salary_info.py.
+fetchAllHrTempSalaryInfo:
+  operation:
+    method: get
+    path: /api/hr-temp-salary-info
+fetchHrTempSalaryInfoByDesignation:
+  operation:
+    method: get
+    path: /api/hr-temp-salary-info/designation/{designation}
+fetchHrTempSalaryInfoByEmpNo:
+  consumes:
+    employee_number:
+    - empNo
+  operation:
+    method: get
+    path: /api/hr-temp-salary-info/{empNo}
+fetchHrTempSalaryInfoByName:
+  operation:
+    method: get
+    path: /api/hr-temp-salary-info/name/{nameFull}
+fetchHrTempSalaryInfoByPreparedDate:
+  operation:
+    method: get
+    path: /api/hr-temp-salary-info/date/{preparedDate}
+fetchHrTempSalaryInfoBySalaryScale:
+  operation:
+    method: get
+    path: /api/hr-temp-salary-info/salary-scale/{salScale}

@@ -1,0 +1,5 @@
+# Bindings for the tools in tools/day_type_tbl.py.
+fetchAllDayTypes:
+  operation:
+    method: get
+    path: /api/day-types

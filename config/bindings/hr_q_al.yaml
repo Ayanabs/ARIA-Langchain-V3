@@ -1,0 +1,28 @@
+# Bindings for the tools in tools/hr_q_al.py.
+fetchAllHrQAL:
+  operation:
+    method: get
+    path: /api/hr-q-al
+fetchHrQALByALIndex:
+  operation:
+    method: get
+    path: /api/hr-q-al/index/{aLIndex}
+fetchHrQALByALSubGrade:
+  operation:
+    method: get
+    path: /api/hr-q-al/sub-grade/{aLSubGrade}
+fetchHrQALByALSubNo:
+  operation:
+    method: get
+    path: /api/hr-q-al/sub-no/{aLSubNo}
+fetchHrQALByALYear:
+  operation:
+    method: get
+    path: /api/hr-q-al/year/{aLYear}
+fetchHrQALByEmployeeNo:
+  consumes:
+    employee_number:
+    - empNo
+  operation:
+    method: get
+    path: /api/hr-q-al/employee/{empNo}

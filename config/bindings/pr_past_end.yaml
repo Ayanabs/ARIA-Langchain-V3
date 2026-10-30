@@ -1,0 +1,13 @@
+# Bindings for the tools in tools/pr_past_end.py.
+fetchAllPrPastEnds:
+  operation:
+    method: get
+    path: /api/pr-past-ends
+fetchPrPastEndsByEndDate:
+  operation:
+    method: get
+    path: /api/pr-past-ends/end-date/{endDate}
+fetchPrPastEndsByPrCode:
+  operation:
+    method: get
+    path: /api/pr-past-ends/pr-code/{prCode}

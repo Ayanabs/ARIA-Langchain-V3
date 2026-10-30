@@ -1,0 +1,19 @@
+# Bindings for the tools in tools/lv_head_tbl.py.
+fetchAllLeaveHeads:
+  operation:
+    method: get
+    path: /api/leave-heads
+fetchLeaveHeadsByEmpNo:
+  consumes:
+    employee_number:
+    - empNo
+  operation:
+    method: get
+    path: /api/leave-heads/employee/{empNo}
+fetchLeaveHeadsByHodEmpNo:
+  consumes:
+    employee_number:
+    - hodEmpNo
+  operation:
+    method: get
+    path: /api/leave-heads/head/{hodEmpNo}

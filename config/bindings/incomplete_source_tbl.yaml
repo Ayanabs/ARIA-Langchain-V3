@@ -1,0 +1,9 @@
+# Bindings for the tools in tools/incomplete_source_tbl.py.
+fetchAllIncompleteSources:
+  operation:
+    method: get
+    path: /api/incomplete-sources
+fetchIncompleteSourcesByDescription:
+  operation:
+    method: get
+    path: /api/incomplete-sources/description/{description}

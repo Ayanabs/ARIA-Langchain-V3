@@ -15,7 +15,13 @@ import yaml
 from pydantic import BaseModel, ConfigDict, Field, SecretStr, ValidationError, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+from aria.catalog.config import CatalogConfig
+from aria.prompts import PromptsConfig
+
 DEFAULT_ENV_FILE = Path(".env")
+
+# Deployment sections that may be kept in a file of their own (`<section>_file`).
+INCLUDABLE_SECTIONS = ("catalog", "prompts")
 
 ModelRoleName = Literal["tool", "synthesis"]
 
@@ -40,6 +46,9 @@ class EnvSettings(BaseSettings):
     aria_config_file: Path = Path("config/aria.yaml")
 
     spring_boot_base_url: str
+    # Bearer credential for reading the backend contract (OpenAPI, entity metadata) where the
+    # backend requires one, as its local-test profile does. Tool calls use the caller's own token.
+    spring_boot_contract_token: SecretStr | None = None
 
     openai_api_base: str
     openai_api_key: SecretStr | None = None
@@ -84,9 +93,12 @@ class ModelProfile(BaseModel):
 
     model_config = ConfigDict(extra="forbid")
 
-    # Only providers whose API accepts a per-request context length are supported, so that prompts
-    # are never silently truncated by the host.
-    provider: Literal["ollama"]
+    # Only hosts whose real per-request context ARIA can set or verify are supported, so prompts are
+    # never silently truncated:
+    # - "ollama": the native API takes the context length per request (`num_ctx`).
+    # - "llama_cpp": llama-server fixes the context per slot at startup; preflight reads it from
+    #   `/props` and the configured context must fit inside it.
+    provider: Literal["ollama", "llama_cpp"]
     context_tokens: int = Field(gt=0)
     input_budget_tokens: int = Field(gt=0)
     max_output_tokens: int = Field(gt=0)
@@ -96,6 +108,9 @@ class ModelProfile(BaseModel):
     max_tools_per_call: int = Field(gt=0)
     shortlist_k: int = Field(gt=0)
     timeout_seconds: float = Field(gt=0)
+    # Whether the model may spend output on hidden reasoning before answering. Off by default:
+    # output is the slow part, and each call asks for one narrow decision.
+    thinking: bool = False
 
     @model_validator(mode="after")
     def _budget_fits_context(self) -> ModelProfile:
@@ -109,6 +124,7 @@ class ServiceConfig(BaseModel):
 
     name: str = "aria"
     preflight_on_startup: bool = True
+    load_catalog_on_startup: bool = True
 
 
 class BackendConfig(BaseModel):
@@ -148,6 +164,11 @@ class DeploymentConfig(BaseModel):
     http: HttpConfig
     preflight: PreflightConfig
     models: ModelsConfig
+    catalog: CatalogConfig = CatalogConfig()
+    prompts: PromptsConfig = PromptsConfig()
+    # The catalog and the prompts may each live in their own file, relative to this one.
+    catalog_file: Path | None = None
+    prompts_file: Path | None = None
 
 
 class ModelRole(BaseModel):
@@ -173,6 +194,13 @@ class Settings(BaseModel):
     @property
     def synthesis_model(self) -> ModelRole:
         return self.models["synthesis"]
+
+    def contract_headers(self) -> dict[str, str]:
+        """Headers for reading the backend contract."""
+        token = self.env.spring_boot_contract_token
+        if token is None or not token.get_secret_value():
+            return {}
+        return {"Authorization": f"Bearer {token.get_secret_value()}"}
 
     def secret_values(self) -> list[str]:
         """Every configured secret, so that logging can mask them wherever they appear."""
@@ -203,6 +231,25 @@ def _read_yaml(path: Path) -> dict:
     if not isinstance(content, dict):
         raise ConfigError([f"deployment config must be a mapping: {path}"])
     return content
+
+
+def merge_binding_files(catalog: dict, catalog_path: Path) -> dict:
+    """Merge the per-module binding files named by `bindings_dir` into the catalog's tools."""
+    if not catalog.get("bindings_dir"):
+        return catalog
+    directory = catalog_path.parent / catalog["bindings_dir"]
+    if not directory.is_dir():
+        raise ConfigError([f"bindings directory not found: {directory}"])
+    tools = dict(catalog.get("tools") or {})
+    problems = []
+    for path in sorted(directory.glob("*.yaml")):
+        for name, binding in _read_yaml(path).items():
+            if name in tools:
+                problems.append(f"{path}: tool {name} is bound more than once")
+            tools[name] = binding
+    if problems:
+        raise ConfigError(problems)
+    return {**catalog, "tools": tools}
 
 
 def _build_model_roles(env: EnvSettings, deployment: DeploymentConfig) -> dict[ModelRoleName, ModelRole]:
@@ -243,10 +290,29 @@ def load_settings(env_file: Path | None = DEFAULT_ENV_FILE, config_file: Path | 
         raise ConfigError(_describe_validation_error("environment", error)) from error
 
     yaml_path = config_file or env.aria_config_file
+    content = _read_yaml(yaml_path)
+    sources = {}
+    for section in INCLUDABLE_SECTIONS:
+        file_key = f"{section}_file"
+        if not content.get(file_key):
+            continue
+        if section in content:
+            raise ConfigError([f"{yaml_path}: give either {section} or {file_key}, not both"])
+        sources[section] = yaml_path.parent / content[file_key]
+        content[section] = _read_yaml(sources[section])
+    if "catalog" in content:
+        content["catalog"] = merge_binding_files(content["catalog"], sources.get("catalog", yaml_path))
     try:
-        deployment = DeploymentConfig.model_validate(_read_yaml(yaml_path))
+        deployment = DeploymentConfig.model_validate(content)
     except ValidationError as error:
-        raise ConfigError(_describe_validation_error(str(yaml_path), error)) from error
+        # Name the file each failing section came from.
+        problems = []
+        for problem in _describe_validation_error(str(yaml_path), error):
+            section = problem.split(": ", 2)[1].split(".", 1)[0]
+            if section in sources:
+                problem = problem.replace(str(yaml_path), str(sources[section]), 1)
+            problems.append(problem)
+        raise ConfigError(problems) from error
 
     models = _build_model_roles(env, deployment)
     return Settings(env=env, deployment=deployment, models=models)

@@ -1,0 +1,20 @@
+# Bindings for the tools in tools/emp_lv_tbl.py.
+fetchAllEmpLeaves:
+  operation:
+    method: get
+    path: /api/emp-leaves
+fetchEmpLeavesByEmployee:
+  consumes:
+    employee_number:
+    - empNo
+  operation:
+    method: get
+    path: /api/emp-leaves/employee/{empNo}
+fetchEmpLeavesByType:
+  operation:
+    method: get
+    path: /api/emp-leaves/type/{leaveTypeId}
+fetchOverseasEmpLeaves:
+  operation:
+    method: get
+    path: /api/emp-leaves/overseas

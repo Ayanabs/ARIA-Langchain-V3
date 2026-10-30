@@ -1,0 +1,5 @@
+# Bindings for the tools in tools/emp_cleaning.py.
+fetchAllEmpCleanings:
+  operation:
+    method: get
+    path: /api/emp-cleanings

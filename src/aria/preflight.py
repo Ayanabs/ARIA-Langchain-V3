@@ -115,6 +115,43 @@ def _model_max_context(model_info: dict) -> int | None:
 
 
 async def check_model_context(role: ModelRole, client: httpx.AsyncClient) -> CheckResult:
+    if role.profile.provider == "llama_cpp":
+        return await _check_llama_cpp_context(role, client)
+    return await _check_ollama_context(role, client)
+
+
+async def _check_llama_cpp_context(role: ModelRole, client: httpx.AsyncClient) -> CheckResult:
+    name = f"model_context:{role.role}"
+    wanted = role.profile.context_tokens
+    api_base = role.api_base.rstrip("/")
+    # llama-server serves `/props` beside the OpenAI-compatible `/v1` routes.
+    server_root = api_base.removesuffix("/v1")
+    headers = _auth_headers(role)
+    try:
+        models = await client.get(f"{api_base}/models", headers=headers)
+        props = await client.get(f"{server_root}/props", headers=headers)
+    except httpx.HTTPError as error:
+        return CheckResult(name, CheckStatus.FAIL, f"model host unreachable ({type(error).__name__})")
+    if models.status_code != 200:
+        return CheckResult(name, CheckStatus.FAIL, f"model list returned HTTP {models.status_code}")
+    served = {model.get("id") for model in models.json().get("data") or []}
+    if role.name not in served:
+        return CheckResult(name, CheckStatus.FAIL, "model is not served by the host")
+    if props.status_code != 200:
+        return CheckResult(name, CheckStatus.FAIL, f"server properties returned HTTP {props.status_code}")
+
+    slot_context = (props.json().get("default_generation_settings") or {}).get("n_ctx")
+    data = {"model": role.name, "requestedContext": wanted, "slotContext": slot_context}
+    if not isinstance(slot_context, int):
+        return CheckResult(name, CheckStatus.FAIL, "host does not report its per-request context", data)
+    if slot_context < wanted:
+        return CheckResult(
+            name, CheckStatus.FAIL, "configured context exceeds the host's per-request context", data
+        )
+    return CheckResult(name, CheckStatus.OK, "configured context fits the host's per-request context", data)
+
+
+async def _check_ollama_context(role: ModelRole, client: httpx.AsyncClient) -> CheckResult:
     name = f"model_context:{role.role}"
     wanted = role.profile.context_tokens
     if not role.native_api_base:
@@ -192,7 +229,7 @@ async def check_backend_openapi(settings: Settings, client: httpx.AsyncClient) -
     name = "backend_openapi"
     url = settings.env.spring_boot_base_url.rstrip("/") + settings.deployment.backend.openapi_path
     try:
-        response = await client.get(url)
+        response = await client.get(url, headers=settings.contract_headers())
     except httpx.HTTPError as error:
         return CheckResult(name, CheckStatus.FAIL, f"backend unreachable ({type(error).__name__})")
     if response.status_code != 200:
@@ -215,7 +252,7 @@ async def check_backend_metadata(settings: Settings, client: httpx.AsyncClient) 
     name = "backend_metadata"
     url = settings.env.spring_boot_base_url.rstrip("/") + settings.deployment.backend.metadata_schema_path
     try:
-        response = await client.get(url)
+        response = await client.get(url, headers=settings.contract_headers())
     except httpx.HTTPError as error:
         return CheckResult(name, CheckStatus.FAIL, f"backend unreachable ({type(error).__name__})")
     if response.status_code != 200:

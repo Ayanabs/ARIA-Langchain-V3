@@ -14,6 +14,7 @@ import pytest
 import yaml
 
 from aria.settings import EnvSettings, Settings, load_settings
+from tests.catalog_fixtures import write_tool_modules
 
 LOOPBACK_HOSTS = {"127.0.0.1", "::1", "localhost"}
 
@@ -101,7 +102,7 @@ def profile(**overrides) -> dict:
 
 def deployment_config(**overrides) -> dict:
     config = {
-        "service": {"name": "aria-test", "preflight_on_startup": False},
+        "service": {"name": "aria-test", "preflight_on_startup": False, "load_catalog_on_startup": False},
         "backend": {"openapi_path": "/contract/openapi", "metadata_schema_path": "/contract/entities"},
         "http": {"connect_timeout_seconds": 1, "read_timeout_seconds": 2, "retries": 0},
         "preflight": {"timeout_seconds": 2},
@@ -140,3 +141,11 @@ def make_settings(write_config):
 @pytest.fixture
 def settings(make_settings) -> Settings:
     return make_settings()
+
+
+@pytest.fixture
+def tools_dir(tmp_path):
+    """The fake tool modules from catalog_fixtures, written to a temporary tools folder."""
+    directory = tmp_path / "tools"
+    write_tool_modules(directory)
+    return directory

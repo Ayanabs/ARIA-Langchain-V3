@@ -1,0 +1,19 @@
+# Bindings for the tools in tools/lv_acting_tbl.py.
+fetchAllLeaveActing:
+  operation:
+    method: get
+    path: /api/leave-acting
+fetchLeaveActingByActingEmployee:
+  consumes:
+    employee_number:
+    - actEmpNo
+  operation:
+    method: get
+    path: /api/leave-acting/acting-employee/{actEmpNo}
+fetchLeaveActingByEmployee:
+  consumes:
+    employee_number:
+    - empNo
+  operation:
+    method: get
+    path: /api/leave-acting/employee/{empNo}

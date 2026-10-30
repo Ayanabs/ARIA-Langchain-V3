@@ -1,0 +1,12 @@
+# Bindings for the tools in tools/hr_salary_all_details.py.
+fetchAllHrSalaryAllDetails:
+  operation:
+    method: get
+    path: /api/hr-salary-all-details
+fetchHrSalaryAllDetailsByEmpNo:
+  consumes:
+    employee_number:
+    - empNo
+  operation:
+    method: get
+    path: /api/hr-salary-all-details/{empNo}

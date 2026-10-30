@@ -1,0 +1,5 @@
+# Bindings for the tools in tools/deny_projects.py.
+fetchAllDenyProjects:
+  operation:
+    method: get
+    path: /api/deny-projects

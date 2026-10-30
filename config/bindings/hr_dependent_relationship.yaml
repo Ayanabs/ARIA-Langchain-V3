@@ -1,0 +1,9 @@
+# Bindings for the tools in tools/hr_dependent_relationship.py.
+fetchAllHrDependentRelationships:
+  operation:
+    method: get
+    path: /api/hr-dependent-relationships
+searchHrDependentRelationshipsByName:
+  operation:
+    method: get
+    path: /api/hr-dependent-relationships/search

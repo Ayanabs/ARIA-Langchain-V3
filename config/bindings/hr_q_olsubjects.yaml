@@ -1,0 +1,5 @@
+# Bindings for the tools in tools/hr_q_olsubjects.py.
+fetchAllHrQOLSubjects:
+  operation:
+    method: get
+    path: /api/hr-q-ol-subjects

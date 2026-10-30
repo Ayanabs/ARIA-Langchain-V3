@@ -1,0 +1,13 @@
+# Bindings for the tools in tools/emp_security.py.
+fetchAllEmpSecurities:
+  operation:
+    method: get
+    path: /api/emp-securities
+fetchEmpSecuritiesByRank:
+  operation:
+    method: get
+    path: /api/emp-securities/rank/{rank}
+fetchEmpSecuritiesByStatus:
+  operation:
+    method: get
+    path: /api/emp-securities/status/{status}

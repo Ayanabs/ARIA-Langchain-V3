@@ -1,0 +1,21 @@
+# Bindings for the tools in tools/hr_project_details.py.
+fetchAllHrProjectDetails:
+  operation:
+    method: get
+    path: /api/hr-project-details
+fetchHrProjectDetailsByApNumber:
+  operation:
+    method: get
+    path: /api/hr-project-details/ap-number/{apnumber}
+fetchHrProjectDetailsByCompany:
+  operation:
+    method: get
+    path: /api/hr-project-details/company/{cname}
+fetchHrProjectDetailsByProjectName:
+  operation:
+    method: get
+    path: /api/hr-project-details/project-name/{pname}
+fetchHrProjectDetailsByProjectType:
+  operation:
+    method: get
+    path: /api/hr-project-details/project-type/{ptype}

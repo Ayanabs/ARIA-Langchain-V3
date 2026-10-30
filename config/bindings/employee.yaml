@@ -1,0 +1,87 @@
+# Bindings for the tools in tools/employee.py.
+fetchAllEmployeeNames:
+  operation:
+    method: get
+    path: /api/employees/names
+fetchAllEmployees:
+  operation:
+    method: get
+    path: /api/employees
+fetchEmployeeByEmail:
+  operation:
+    method: get
+    path: /api/employees/email/{email}
+  produces:
+    employee_number:
+    - empno
+fetchEmployeeByEmpno:
+  consumes:
+    employee_number:
+    - empno
+  operation:
+    method: get
+    path: /api/employees/empno/{empno}
+fetchEmployeeByFullname:
+  operation:
+    method: get
+    path: /api/employees/fullname/{fullname}
+  produces:
+    employee_number:
+    - empno
+fetchEmployeeByName:
+  operation:
+    method: get
+    path: /api/employees/fullname/{fullname}
+  parameters:
+    name: fullname
+  produces:
+    employee_number:
+    - empno
+fetchEmployeeByNicnum:
+  operation:
+    method: get
+    path: /api/employees/nic/{nicnum}
+  produces:
+    employee_number:
+    - empno
+fetchEmployeesByCategorycode:
+  operation:
+    method: get
+    path: /api/hr-official-details/category/{category}
+  parameters:
+    categorycode: category
+fetchEmployeesByDesigcode:
+  operation:
+    method: get
+    path: /api/hr-official-details/designation/{desigCode}
+  parameters:
+    desigcode: desigCode
+fetchEmployeesByFullname:
+  operation:
+    method: get
+    path: /api/employees/fullname/{fullname}
+  produces:
+    employee_number:
+    - empno
+fetchEmployeesByName:
+  operation:
+    method: get
+    path: /api/employees/fullname/{fullname}
+  parameters:
+    name: fullname
+  produces:
+    employee_number:
+    - empno
+fetchEmployeesByPhone:
+  operation:
+    method: get
+    path: /api/employees/phone/{phone}
+  produces:
+    employee_number:
+    - empno
+fetchEmployeesByStatus:
+  operation:
+    method: get
+    path: /api/hr-official-details/active/{empActive}
+  parameters:
+    status: empActive

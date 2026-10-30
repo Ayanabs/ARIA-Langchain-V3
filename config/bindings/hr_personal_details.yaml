@@ -1,0 +1,32 @@
+# Bindings for the tools in tools/hr_personal_details.py.
+fetchAllHrPersonalDetails:
+  operation:
+    method: get
+    path: /api/hr-personal-details
+fetchHrPersonalDetailsByEmpNo:
+  consumes:
+    employee_number:
+    - empNo
+  operation:
+    method: get
+    path: /api/hr-personal-details/{empNo}
+fetchHrPersonalDetailsByFullname:
+  operation:
+    method: get
+    path: /api/hr-personal-details/fullname/{fullname}
+fetchHrPersonalDetailsByGender:
+  operation:
+    method: get
+    path: /api/hr-personal-details/gender/{gender}
+fetchHrPersonalDetailsByInitials:
+  operation:
+    method: get
+    path: /api/hr-personal-details/initials/{initials}
+fetchHrPersonalDetailsBySurname:
+  operation:
+    method: get
+    path: /api/hr-personal-details/surname/{surname}
+fetchHrPersonalDetailsByTitle:
+  operation:
+    method: get
+    path: /api/hr-personal-details/title/{title}

@@ -1,0 +1,13 @@
+# Bindings for the tools in tools/hr_designation_tbl.py.
+fetchAllHrDesignations:
+  operation:
+    method: get
+    path: /api/hr-designations
+fetchHrDesignationsBySalaryCode:
+  operation:
+    method: get
+    path: /api/hr-designations/salary/{salaryCode}
+searchHrDesignationsByName:
+  operation:
+    method: get
+    path: /api/hr-designations/search

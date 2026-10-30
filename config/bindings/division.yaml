@@ -1,0 +1,40 @@
+# Bindings for the tools in tools/division.py.
+fetchAllDivisions:
+  operation:
+    method: get
+    path: /api/divisions
+fetchDivisionByCode:
+  consumes:
+    Division.divisioncode:
+    - divisioncode
+  operation:
+    method: get
+    path: /api/divisions/{id}
+  parameters:
+    divisioncode: id
+fetchDivisionByName:
+  operation:
+    method: get
+    path: /api/divisions/name/{name}
+  produces:
+    Division.divisioncode:
+    - divisioncode
+fetchDivisionByShortCode:
+  operation:
+    method: get
+    path: /api/divisions/shcode/{shCode}
+  produces:
+    Division.divisioncode:
+    - divisioncode
+fetchDivisionsByHod:
+  consumes:
+    employee_number:
+    - hodEmpno
+  operation:
+    method: get
+    path: /api/divisions/hod/{hod}
+  parameters:
+    hodEmpno: hod
+  produces:
+    Division.divisioncode:
+    - divisioncode

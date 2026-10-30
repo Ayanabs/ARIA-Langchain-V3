@@ -1,0 +1,17 @@
+# Bindings for the tools in tools/pr_project_types.py.
+fetchAllPrProjectTypes:
+  operation:
+    method: get
+    path: /api/pr-project-types
+fetchPrProjectTypeByCode:
+  operation:
+    method: get
+    path: /api/pr-project-types/{ptCode}
+fetchPrProjectTypesByDescription:
+  operation:
+    method: get
+    path: /api/pr-project-types/description/{ptDescription}
+fetchPrProjectTypesByShortDescription:
+  operation:
+    method: get
+    path: /api/pr-project-types/short-description/{ptShortDes}

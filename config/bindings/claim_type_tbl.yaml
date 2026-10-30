@@ -1,0 +1,9 @@
+# Bindings for the tools in tools/claim_type_tbl.py.
+fetchAllClaimTypes:
+  operation:
+    method: get
+    path: /api/claim-types
+fetchClaimTypeByType:
+  operation:
+    method: get
+    path: /api/claim-types/type/{cType}

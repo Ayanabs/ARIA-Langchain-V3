@@ -1,0 +1,19 @@
+# Bindings for the tools in tools/attendance.py.
+fetchActualAttendanceByDate:
+  operation:
+    method: get
+    path: /api/attendance/date/{date}
+fetchActualAttendanceByEmployeeAndDate:
+  consumes:
+    employee_number:
+    - empNo
+  operation:
+    method: get
+    path: /api/attendance/employee/{empNo}/date/{date}
+fetchAllActualAttendanceByEmployee:
+  consumes:
+    employee_number:
+    - empNo
+  operation:
+    method: get
+    path: /api/attendance/employee/{empNo}

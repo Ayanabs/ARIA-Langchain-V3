@@ -1,0 +1,5 @@
+# Bindings for the tools in tools/emp_grade.py.
+fetchAllEmpGrades:
+  operation:
+    method: get
+    path: /api/emp-grades

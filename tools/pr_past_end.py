@@ -1,22 +1,18 @@
-from langchain_core.tools import tool
-from urllib.parse import quote
-from aria_agent.http.client import make_request, clean_id
+"""Registered tools. Endpoints and keys are bound in config/tools.yaml."""
+
+from aria.catalog import tool
+
 
 @tool
 def fetchAllPrPastEnds() -> list:
-    """Retrieves all PR past end records. Maps to /api/pr-past-ends."""
-    return make_request("/api/pr-past-ends")
+    """Retrieves all PR past end records."""
+
 
 @tool
 def fetchPrPastEndsByPrCode(prCode: str) -> list:
-    """Retrieves PR past end records filtered by PR code. Maps to /api/pr-past-ends/pr-code/{prCode}."""
-    if not prCode or not str(prCode).strip():
-        return {"error": "PR code cannot be empty"}
-    return make_request(f"/api/pr-past-ends/pr-code/{quote(prCode)}")
+    """Retrieves PR past end records filtered by PR code."""
+
 
 @tool
 def fetchPrPastEndsByEndDate(endDate: str) -> list:
-    """Retrieves PR past end records filtered by end date (YYYY-MM-DD). Maps to /api/pr-past-ends/end-date/{endDate}."""
-    if not endDate or not str(endDate).strip():
-        return {"error": "End date cannot be empty"}
-    return make_request(f"/api/pr-past-ends/end-date/{quote(endDate)}")
+    """Retrieves PR past end records filtered by end date (YYYY-MM-DD)."""

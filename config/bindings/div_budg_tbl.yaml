@@ -1,0 +1,13 @@
+# Bindings for the tools in tools/div_budg_tbl.py.
+fetchAllDivBudgets:
+  operation:
+    method: get
+    path: /api/div-budgets
+fetchDivBudgetsByBudgetYear:
+  operation:
+    method: get
+    path: /api/div-budgets/year/{budgYear}
+fetchDivBudgetsByDivisionCode:
+  operation:
+    method: get
+    path: /api/div-budgets/division/{divCode}

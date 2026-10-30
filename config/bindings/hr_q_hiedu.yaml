@@ -1,0 +1,12 @@
+# Bindings for the tools in tools/hr_q_hiedu.py.
+fetchAllHrQHiEdus:
+  operation:
+    method: get
+    path: /api/hr-q-hi-edu
+fetchHrQHieduByEmpNo:
+  consumes:
+    employee_number:
+    - empNo
+  operation:
+    method: get
+    path: /api/hr-q-hi-edu/employee/{empNo}

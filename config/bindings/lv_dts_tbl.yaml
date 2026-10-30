@@ -1,0 +1,9 @@
+# Bindings for the tools in tools/lv_dts_tbl.py.
+fetchAllLeaveDates:
+  operation:
+    method: get
+    path: /api/leave-dates
+fetchLeaveDatesByLeaveDate:
+  operation:
+    method: get
+    path: /api/leave-dates/date/{leaveDate}

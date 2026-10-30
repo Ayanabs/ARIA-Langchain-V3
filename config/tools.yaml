@@ -1,0 +1,83 @@
+# Tool catalog: registered tool modules, declared business keys and chain limits.
+# Each module's tools are bound to backend operations in bindings/<module>.yaml. Operations are
+# named by method and path because springdoc's generated operationIds change when unrelated
+# controllers change. Only declared keys link tools.
+tools_dir: tools
+max_chain_depth: 4
+max_fan_out: 20
+modules:
+- attendance
+- category
+- claim_type_tbl
+- com_division
+- day_type_tbl
+- deny_projects
+- designation
+- div_budg_tbl
+- division
+- emp_cleaning
+- emp_grade
+- emp_lv_tbl
+- emp_security
+- emp_slv_tbl
+- employee
+- github_repositories
+- hr_depdetails
+- hr_dependent_relationship
+- hr_desig_cadre
+- hr_designation_tbl
+- hr_division_tbl
+- hr_edu_levels
+- hr_edu_levels_des
+- hr_higheredu_details
+- hr_inc_rpt
+- hr_official_details
+- hr_personal_details
+- hr_project_details
+- hr_project_types
+- hr_projects
+- hr_q_al
+- hr_q_al_subjects
+- hr_q_classes
+- hr_q_experiance
+- hr_q_grades
+- hr_q_hiedu
+- hr_q_institutes
+- hr_q_ol
+- hr_q_olsubjects
+- hr_salary_all_details
+- hr_salary_details
+- hr_salary_scale
+- hr_salary_scale_details
+- hr_salary_tbl
+- hr_stores_tbl
+- hr_temp_salary_info
+- incomplete_source_tbl
+- issues_tbl
+- lv_acting_tbl
+- lv_dts_tbl
+- lv_head_tbl
+- lv_head_tbl_pr
+- main_sub_division
+- positions_tbl
+- pr_change_history
+- pr_close_reason
+- pr_closed
+- pr_code_update
+- pr_deny_closedprj
+- pr_deny_projects
+- pr_extend
+- pr_past_end
+- pr_project_apcode
+- pr_project_types
+- pr_project_types2
+- pr_projects
+- pr_stores_tbl
+- sa_location
+keys:
+  employee_number:
+    entity: Employee
+    fields:
+    - empno
+    label: employee number
+bindings_dir: bindings

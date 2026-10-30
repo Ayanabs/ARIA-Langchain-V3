@@ -1,0 +1,13 @@
+# Bindings for the tools in tools/pr_close_reason.py.
+fetchAllPrCloseReasons:
+  operation:
+    method: get
+    path: /api/pr-close-reasons
+fetchPrCloseReasonsByPrType:
+  operation:
+    method: get
+    path: /api/pr-close-reasons/pr-type/{prType}
+fetchPrCloseReasonsByReason:
+  operation:
+    method: get
+    path: /api/pr-close-reasons/reason/{clReason}

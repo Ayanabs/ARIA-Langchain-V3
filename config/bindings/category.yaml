@@ -1,0 +1,9 @@
+# Bindings for the tools in tools/category.py.
+fetchAllCategories:
+  operation:
+    method: get
+    path: /api/categories
+fetchCategoryByCategory:
+  operation:
+    method: get
+    path: /api/categories/category/{category}

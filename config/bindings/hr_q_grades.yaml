@@ -1,0 +1,9 @@
+# Bindings for the tools in tools/hr_q_grades.py.
+fetchAllHrQGrades:
+  operation:
+    method: get
+    path: /api/hr-q-grades
+searchHrQGradesByName:
+  operation:
+    method: get
+    path: /api/hr-q-grades/search

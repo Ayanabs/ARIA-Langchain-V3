@@ -1,0 +1,5 @@
+# Bindings for the tools in tools/hr_q_classes.py.
+fetchAllHrQClasses:
+  operation:
+    method: get
+    path: /api/hr-q-classes

@@ -1,0 +1,17 @@
+# Bindings for the tools in tools/pr_closed.py.
+fetchAllPrCloseds:
+  operation:
+    method: get
+    path: /api/pr-closed
+fetchPrClosedByClId:
+  operation:
+    method: get
+    path: /api/pr-closed/cl-id/{clId}
+fetchPrClosedByClReason:
+  operation:
+    method: get
+    path: /api/pr-closed/cl-reason/{clReason}
+fetchPrClosedByPType:
+  operation:
+    method: get
+    path: /api/pr-closed/p-type/{pType}

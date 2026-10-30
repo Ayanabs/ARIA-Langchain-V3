@@ -1,0 +1,13 @@
+# Bindings for the tools in tools/hr_stores_tbl.py.
+fetchAllHrStores:
+  operation:
+    method: get
+    path: /api/hr-stores
+fetchHrStoresBySerialNo:
+  operation:
+    method: get
+    path: /api/hr-stores/serial-no/{serialNo}
+fetchHrStoresByStCode:
+  operation:
+    method: get
+    path: /api/hr-stores/st-code/{stCode}
