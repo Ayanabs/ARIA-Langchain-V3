@@ -5,10 +5,11 @@ from aria.catalog import tool
 
 @tool
 def fetchAllHrSalaryAllDetails() -> list:
-    """Retrieves detailed salary slip breakdown calculations for all employees."""
+    """Lists employee salary slip details including current salary, increment value, grade, and
+    paid date."""
 
 
 @tool
 def fetchHrSalaryAllDetailsByEmpNo(empNo: int) -> list:
-    """Retrieves detailed salary breakdown calculations for a specific employee by Employee Number
-    (empNo)."""
+    """Lists detailed salary breakdown calculations for an employee selected by employee number,
+    returning current salary, grade, increment value and paid date."""

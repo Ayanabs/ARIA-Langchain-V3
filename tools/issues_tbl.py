@@ -5,20 +5,23 @@ from aria.catalog import tool
 
 @tool
 def fetchAllIssues() -> list:
-    """Retrieves electronic timecard attendance discrepancy issues for all employees."""
+    """Lists attendance discrepancy issues including employee number, description, issue type,
+    and attendance date identifier."""
 
 
 @tool
 def fetchIssuesByEmpNo(empNo: int) -> list:
-    """Retrieves timecard attendance discrepancy issues for a specific employee by Employee Number
-    (empNo)."""
+    """Lists attendance discrepancy issues for an employee by their number, returning the date
+    ID, employee number, description, and issue type."""
 
 
 @tool
 def fetchIssuesByType(issueType: int) -> list:
-    """Retrieves attendance issues filtered by issue type."""
+    """Lists attendance issues filtered by a specific issue type, returning the date ID,
+    employee number, description, and issue type."""
 
 
 @tool
 def fetchIssueByAttDtId(attDtId: int) -> dict:
-    """Retrieves the attendance issue recorded for one attendance date ID."""
+    """Gets the attendance issue for an attendance date ID, returning the employee number,
+    description and issue type."""

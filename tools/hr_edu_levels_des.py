@@ -5,4 +5,5 @@ from aria.catalog import tool
 
 @tool
 def fetchAllHrEduLevelsDes() -> list:
-    """Retrieves education level detailed descriptions."""
+    """Lists detailed education level descriptions, returning the identifier and descriptive
+    text for specific educational qualifications."""

@@ -5,24 +5,29 @@ from aria.catalog import tool
 
 @tool
 def fetchAllHrProjectDetails() -> list:
-    """Retrieves detailed HR project activity specifications."""
+    """Lists HR project activity specifications, returning the serial number, project name,
+    start date, end date and type code."""
 
 
 @tool
 def fetchHrProjectDetailsByProjectName(pname: str) -> list:
-    """Retrieves detailed HR project specs filtered by project title/name."""
+    """Lists project details filtered by project name, returning project name, start date, end
+    date and company."""
 
 
 @tool
 def fetchHrProjectDetailsByApNumber(apnumber: int) -> list:
-    """Retrieves detailed HR project specs filtered by approval code (apnumber)."""
+    """Lists project details filtered by AP number, returning project name, start date, end date
+    and company."""
 
 
 @tool
 def fetchHrProjectDetailsByProjectType(ptype: str) -> list:
-    """Retrieves detailed HR project specs filtered by project type description (ptype)."""
+    """Lists project details filtered by project type, returning project name, start date, end
+    date and company."""
 
 
 @tool
 def fetchHrProjectDetailsByCompany(cname: str) -> list:
-    """Retrieves detailed HR project specs filtered by client or sponsoring company name (cname)."""
+    """Lists project details filtered by company name, returning project name, start date, end
+    date and company."""

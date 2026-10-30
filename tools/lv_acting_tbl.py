@@ -5,18 +5,17 @@ from aria.catalog import tool
 
 @tool
 def fetchAllLeaveActing() -> list:
-    """Retrieves all leave acting cover arrangements across the entire organisation. Each record
-    contains: Lv_Act_ID, Emp_No (absent employee), Act_Emp_No (substitute/covering officer),
-    Leave_Start_Date, Leave_End_Date, and status."""
+    """Lists leave acting arrangements including absent employee number, covering officer
+    number, and leave action identifier."""
 
 
 @tool
 def fetchLeaveActingByEmployee(empNo: int) -> list:
-    """Retrieves acting arrangement records for an employee taking leave (who acted on their behalf
-    while they were absent)."""
+    """Lists acting arrangement records for an employee on leave, returning the acting ID,
+    original employee number, and acting employee number."""
 
 
 @tool
 def fetchLeaveActingByActingEmployee(actEmpNo: int) -> list:
-    """Retrieves leave acting cover records where a specific employee (actEmpNo) acted or covered
-    duties for another employee on leave."""
+    """Lists leave acting records where an employee covered duties for another, returning the
+    acting ID, original employee number, and acting employee number."""

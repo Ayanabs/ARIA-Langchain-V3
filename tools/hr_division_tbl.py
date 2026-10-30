@@ -5,19 +5,23 @@ from aria.catalog import tool
 
 @tool
 def fetchAllHrDivisions() -> list:
-    """Retrieves all HR division records."""
+    """Lists all HR division records, returning the code, name, short code and category for each
+    organizational unit."""
 
 
 @tool
 def searchHrDivisionsByName(name: str) -> list:
-    """Searches HR division records by full or partial division title/name."""
+    """Lists division records matching the name parameter, returning division code, division
+    title, short code and category."""
 
 
 @tool
 def fetchHrDivisionsByCategory(category: str) -> list:
-    """Retrieves HR division records matching a category code."""
+    """Lists division records selected by category code, returning division code, division, sh
+    code, and category."""
 
 
 @tool
 def fetchHrDivisionsByShCode(shCode: str) -> list:
-    """Retrieves HR division records matching short code/acronym (shCode)."""
+    """Lists division records selected by short code, returning division code, division, sh
+    code, and category."""

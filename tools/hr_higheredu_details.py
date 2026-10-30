@@ -5,20 +5,23 @@ from aria.catalog import tool
 
 @tool
 def fetchAllHrHigherEduDetails() -> list:
-    """Retrieves higher education qualification records for all employees."""
+    """Lists higher education qualification records for employees, returning the employee
+    number, education type, level and description."""
 
 
 @tool
 def fetchHrHighereduDetailsByEmployee(empNo: int) -> list:
-    """Retrieves higher education degrees, diplomas, postgraduate, and doctorate qualifications for an
-    employee by Employee Number (empNo)."""
+    """Lists higher education records selected by employee number, returning sub edu type,
+    higher edu level, description, and emp no."""
 
 
 @tool
 def fetchHrHighereduDetailsBySubEduType(subEduType: int) -> list:
-    """Retrieves higher education records filtered by sub-education category."""
+    """Lists higher education records selected by sub-education type, returning sub edu type,
+    higher edu level, description, and emp no."""
 
 
 @tool
 def fetchHrHighereduDetailsByHigherEduLevel(higherEduLevel: int) -> list:
-    """Retrieves higher education records filtered by academic level."""
+    """Lists higher education records selected by academic level, returning sub edu type, higher
+    edu level, description, and emp no."""

@@ -5,64 +5,71 @@ from aria.catalog import tool
 
 @tool
 def fetchAllHrProjects() -> list:
-    """."""
+    """Lists project records, returning serial number, year, division code, project name, start
+    date, end date, type, confirmation status and close status."""
 
 
 @tool
 def fetchHrProjectsByYear(year: int) -> list:
-    """Retrieves HR projects filtered by initiation year."""
+    """Lists HR projects filtered by initiation year, returning serial number, project name,
+    description, start date and end date."""
 
 
 @tool
 def fetchHrProjectsByProjectType(ptCode: int) -> list:
-    """Retrieves HR projects filtered strictly by numeric project type code (ptCode)."""
+    """Lists HR projects selected by numeric project type code, returning serial number, project
+    name, description, and type code."""
 
 
 @tool
 def fetchHrProjectsByCode(code: str) -> list:
-    """Retrieves HR project details matching a specific unique project code."""
+    """Lists HR projects selected by unique project code, returning serial number, project name,
+    description, and start date."""
 
 
 @tool
 def fetchHrProjectsByProjectName(pname: str) -> list:
-    """Retrieves HR projects matching a full or partial project title/name."""
+    """Lists HR projects selected by project title or name, returning serial number, project
+    name, description, and start date."""
 
 
 @tool
 def fetchHrProjectsByApCode(apcode: str) -> list:
-    """Retrieves HR projects filtered by approval/accounting code (apcode)."""
+    """Lists HR projects selected by AP code, returning serial number, project name,
+    description, and start date."""
 
 
 @tool
 def fetchHrProjectsByPType(ptype: str) -> list:
-    """Retrieves HR projects filtered strictly by official project classification type
-    description/name."""
+    """Lists HR projects selected by official project type description, returning serial number,
+    project name, description, and type code."""
 
 
 @tool
 def fetchHrProjectsByClient(cname: str) -> list:
-    """Retrieves HR projects funded by, sponsored by, or executed for an external client, sponsor,
-    customer, or partner organization. Use this tool whenever the user asks for HR projects
-    related to, funded by, or sponsored by an external client, sponsor, partner institution,
-    ministry, or government department. Searches against client/sponsor name (cname). Supports
-    full or partial organization names."""
+    """Lists HR projects selected by client name, returning serial number, project name,
+    description, and client name."""
 
 
 @tool
 def fetchHrProjectsByStatus(confirm: str) -> list:
-    """Retrieves HR projects filtered by confirmation status."""
+    """Lists HR projects selected by confirmation status, returning serial number, project name,
+    description, and confirmation status."""
 
 
 @tool
 def fetchHrProjectsBySkillCode(skCode: str) -> list:
-    """Retrieves HR projects filtered by technical skill category code (skCode)."""
+    """Lists HR projects selected by technical skill category code, returning serial number,
+    project name, description, and skill code."""
 
 
 @tool
 def fetchHrProjectsByClosedStatus(pClose: str) -> list:
-    """Retrieves HR projects filtered by closure status."""
+    """Lists HR projects selected by closure status, returning serial number, project name,
+    description, and end date."""
 
 
 @tool
 def fetchHrProjectsByEmployee(empNo: str) -> list:
-    """Retrieves all HR projects assigned to or created by a specific employee."""
+    """Lists HR projects selected by employee identifier, returning serial number, project name,
+    description, and start date."""

@@ -5,4 +5,5 @@ from aria.catalog import tool
 
 @tool
 def fetchAllHrSalaryScales() -> list:
-    """Retrieves salary scale definition master records."""
+    """Lists salary scale definitions including salary code, grade, salary scale identifier, and
+    record id."""

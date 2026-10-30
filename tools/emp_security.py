@@ -5,14 +5,17 @@ from aria.catalog import tool
 
 @tool
 def fetchAllEmpSecurities() -> list:
-    """Retrieves security staff roster and gate post duty assignments."""
+    """Lists security staff roster records, returning employee ID, name, ID number, rank, and
+    status."""
 
 
 @tool
 def fetchEmpSecuritiesByRank(rank: str) -> list:
-    """Retrieves security staff records with a given rank."""
+    """Lists security staff records selected by their rank, returning the name, identification
+    number, and current status."""
 
 
 @tool
 def fetchEmpSecuritiesByStatus(status: int) -> list:
-    """Retrieves security staff records with a given status code."""
+    """Lists security staff records selected by a specific status code, returning the name,
+    identification number, and rank."""

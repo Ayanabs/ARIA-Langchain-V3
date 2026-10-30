@@ -5,68 +5,78 @@ from aria.catalog import tool
 
 @tool
 def fetchAllPrProjects() -> list:
-    """."""
+    """Lists all PR projects, returning serial no, year, div code, pt code, description, code,
+    pname, apcode, startdate, enddate, ptype, cname, confirm, hod confirm, hod confirmed date,
+    sk code, capital, recurrent, externalinput and rdate."""
 
 
 @tool
 def fetchPrProjectBySerialNo(serialNo: int) -> dict:
-    """Retrieves a single PR project record by primary key serial sequence number (serialNo )."""
+    """Gets a single project record by its serial number, returning name, description, start
+    date, and end date."""
 
 
 @tool
 def fetchPrProjectsByYear(year: int) -> list:
-    """Retrieves PR projects filtered by initiation year."""
+    """Lists projects selected by initiation year, returning serial number, year, description,
+    and project name."""
 
 
 @tool
 def fetchPrProjectsByProjectType(ptCode: int) -> list:
-    """Retrieves PR projects filtered strictly by numeric project classification type code."""
+    """Lists projects selected by numeric project classification type code, returning serial
+    number, year, description, and project name."""
 
 
 @tool
 def fetchPrProjectsByCode(code: str) -> list:
-    """Retrieves PR project details matching a specific unique project code."""
+    """Lists projects selected by unique code, returning serial number, project name, client
+    name and project type."""
 
 
 @tool
 def fetchPrProjectsByProjectName(pname: str) -> list:
-    """Retrieves PR projects matching a full or partial project title/name."""
+    """Lists projects selected by project name, returning serial number, project name, client
+    name and project type."""
 
 
 @tool
 def fetchPrProjectsByApCode(apcode: str) -> list:
-    """Retrieves PR projects filtered by approval/accounting code (apcode)."""
+    """Lists projects selected by AP code, returning serial number, project name, client name
+    and project type."""
 
 
 @tool
 def fetchPrProjectsByPType(ptype: str) -> list:
-    """Retrieves PR projects filtered strictly by project classification type description/name."""
+    """Lists projects selected by project type description, returning serial number, project
+    name, client name and project type."""
 
 
 @tool
 def fetchPrProjectsByClient(cname: str) -> list:
-    """Retrieves institutional, software, engineering, and research PR projects funded by, sponsored
-    by, or executed for an external client, sponsor, customer, or partner organization. Use this
-    tool whenever the user asks for projects related to, funded by, or sponsored by an external
-    client, sponsor, partner institution, ministry, or government department. Searches against
-    client/sponsor name (cname). Supports full or partial organization names."""
+    """Lists projects selected by client name, returning serial number, project name, client
+    name and project type."""
 
 
 @tool
 def fetchPrProjectsByStatus(confirm: str) -> list:
-    """Retrieves PR projects filtered by confirmation status."""
+    """Lists projects selected by confirmation status, returning serial number, year,
+    description, and project name."""
 
 
 @tool
 def fetchPrProjectsBySkillCode(skCode: str) -> list:
-    """Retrieves PR projects filtered by technical skill category code (skCode)."""
+    """Lists projects selected by technical skill category code, returning serial number, year,
+    description, and project name."""
 
 
 @tool
 def fetchPrProjectsByClosedStatus(pClose: str) -> list:
-    """Retrieves PR projects filtered by closure status."""
+    """Lists projects selected by closure status, returning serial number, project name, client
+    name and project type."""
 
 
 @tool
 def fetchPrProjectsByEmployee(empNo: str) -> list:
-    """Retrieves all PR projects created by, assigned to, or closed by a specific employee."""
+    """Lists projects selected by employee identifier, returning serial number, project name,
+    client name and project type."""

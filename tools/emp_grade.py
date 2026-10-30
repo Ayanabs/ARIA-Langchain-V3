@@ -5,4 +5,5 @@ from aria.catalog import tool
 
 @tool
 def fetchAllEmpGrades() -> list:
-    """Retrieves employee salary grade classification levels."""
+    """Lists salary grade classifications, returning grade ID, grade label, and full grade
+    details."""

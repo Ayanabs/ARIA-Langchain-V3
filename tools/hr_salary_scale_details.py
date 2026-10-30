@@ -5,4 +5,5 @@ from aria.catalog import tool
 
 @tool
 def fetchAllHrSalaryScaleDetails() -> list:
-    """Retrieves detailed salary scale increment step breakdowns."""
+    """Lists salary scale increment steps including salary code, grade, increment years, amount,
+    and order."""

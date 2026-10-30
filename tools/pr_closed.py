@@ -5,19 +5,23 @@ from aria.catalog import tool
 
 @tool
 def fetchAllPrCloseds() -> list:
-    """Retrieves completed and closed PR project records."""
+    """Lists completed project closure records, returning identifier, closure reason, dates,
+    invoice, client name and other details."""
 
 
 @tool
 def fetchPrClosedByClId(clId: int) -> list:
-    """Retrieves closed project records by closure sequence ID (clId)."""
+    """Lists closed project records selected by closure sequence ID, returning cl id, cl reason
+    and cname."""
 
 
 @tool
 def fetchPrClosedByPType(pType: str) -> list:
-    """Retrieves closed project records filtered by project type classification (pType)."""
+    """Lists closed project records selected by project type, returning cl id, cl reason and
+    cname."""
 
 
 @tool
 def fetchPrClosedByClReason(clReason: str) -> list:
-    """Retrieves closed project records filtered by closure reason keyword."""
+    """Lists closed project records selected by closure reason keyword, returning cl id, cl
+    reason and cname."""

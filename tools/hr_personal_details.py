@@ -5,38 +5,41 @@ from aria.catalog import tool
 
 @tool
 def fetchAllHrPersonalDetails() -> list:
-    """Retrieves extended personal records for all employees."""
+    """Lists extended personal records for employees, returning the employee number, full name,
+    gender, date of birth and contact details."""
 
 
 @tool
 def fetchHrPersonalDetailsByEmpNo(empNo: int) -> dict:
-    """Retrieves extended personal information for a specific employee by Employee Number (empNo)."""
+    """Gets extended personal information for a specific employee identified by an employee
+    number, returning full name, gender, permanent address, and email."""
 
 
 @tool
 def fetchHrPersonalDetailsByTitle(title: str) -> list:
-    """Retrieves personal records for ALL employees filtered by salutation Title."""
+    """Lists employee personal records filtered by title, returning title, surname, initials and
+    name."""
 
 
 @tool
 def fetchHrPersonalDetailsBySurname(surname: str) -> list:
-    """Retrieves personal records for ALL employees matching a specific Surname / Last Name."""
+    """Lists employee personal records filtered by surname, returning title, surname, initials
+    and name."""
 
 
 @tool
 def fetchHrPersonalDetailsByInitials(initials: str) -> list:
-    """Retrieves personal records for ALL employees matching specific Name Initials."""
+    """Lists employee personal records filtered by initials, returning title, surname, initials
+    and name."""
 
 
 @tool
 def fetchHrPersonalDetailsByFullname(fullname: str) -> list:
-    """Retrieves personal records for employees matching a full name denoted by initials (NameDnbyIntl)
-    in the HR personal records table. Note: For general employee searches, contact info, mobile
-    number, phone, or address by name, prefer fetchEmployeeByName or fetchEmployeesByFullname as
-    the primary tool. Use this tool only when searching specific HR personal records when empNo
-    is not yet known."""
+    """Lists personal records for employees matching a specific full name string, returning
+    employee number, full name, gender, permanent address, and email."""
 
 
 @tool
 def fetchHrPersonalDetailsByGender(gender: str) -> list:
-    """Retrieves personal records for ALL employees filtered by Gender."""
+    """Lists employee personal records filtered by gender, returning title, surname, initials
+    and name."""

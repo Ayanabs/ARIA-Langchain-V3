@@ -5,31 +5,35 @@ from aria.catalog import tool
 
 @tool
 def fetchAllHrTempSalaryInfo() -> list:
-    """Retrieves temporary salary calculation statements for all employees."""
+    """Lists temporary salary statements including employee number, full name, designation,
+    present salary, and final salary."""
 
 
 @tool
 def fetchHrTempSalaryInfoByEmpNo(empNo: int) -> list:
-    """Retrieves temporary salary calculation statement for a specific employee by Employee Number
-    (empNo)."""
+    """Lists temporary salary statements for an employee number, returning the employee number,
+    full name, designation, current salary and final salary."""
 
 
 @tool
 def fetchHrTempSalaryInfoByDesignation(designation: str) -> list:
-    """Retrieves temporary salary statements filtered by Designation job title."""
+    """Lists temporary salary statements filtered by job title, returning the employee number,
+    full name, designation, current salary and final salary."""
 
 
 @tool
 def fetchHrTempSalaryInfoBySalaryScale(salScale: str) -> list:
-    """Retrieves temporary salary statements filtered by Salary Scale specification/code (salScale)."""
+    """Lists temporary salary statements filtered by salary scale code, returning the employee
+    number, full name, designation, current salary and final salary."""
 
 
 @tool
 def fetchHrTempSalaryInfoByName(nameFull: str) -> list:
-    """Retrieves temporary salary statements matching an employee's full name (nameFull)."""
+    """Lists temporary salary statements matching a full name, returning the employee number,
+    full name, designation, current salary and final salary."""
 
 
 @tool
 def fetchHrTempSalaryInfoByPreparedDate(preparedDate: str) -> list:
-    """Retrieves temporary salary statements filtered by preparation date (preparedDate, Format: YYYY-
-    MM-DD)."""
+    """Lists temporary salary statements filtered by preparation date, returning the employee
+    number, full name, designation, current salary and final salary."""

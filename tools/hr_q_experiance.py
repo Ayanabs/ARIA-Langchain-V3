@@ -5,11 +5,11 @@ from aria.catalog import tool
 
 @tool
 def fetchAllHrQExperience() -> list:
-    """Retrieves all employee prior work experience and employment history records. Each record
-    contains: empNo, companyName, designation, startDate, endDate, durationYears,
-    responsibilities."""
+    """Lists employee work experience records, returning employee identifier, institute name,
+    designation, description and application date."""
 
 
 @tool
 def fetchHrQExperienceByEmployeeId(empNo: int) -> list:
-    """Retrieves prior employment history and work experience records for an employee by empNo."""
+    """Lists prior employment history for an employee by identifier, returning institute,
+    designation, description and appointment date."""

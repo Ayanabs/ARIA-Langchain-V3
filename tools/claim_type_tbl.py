@@ -5,9 +5,9 @@ from aria.catalog import tool
 
 @tool
 def fetchAllClaimTypes() -> list:
-    """Retrieves all official claim types."""
+    """Lists all official claim types, returning the claim type identifier and claim type name."""
 
 
 @tool
 def fetchClaimTypeByType(cType: str) -> dict:
-    """Retrieves claim type details by description or name (cType)."""
+    """Gets claim type details by description or name, returning ctype id and ctype."""

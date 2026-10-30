@@ -5,24 +5,29 @@ from aria.catalog import tool
 
 @tool
 def fetchAllHrOfficialDetails() -> list:
-    """Retrieves official appointment and career details for all employees."""
+    """Lists official appointment details for employees, returning the employee number,
+    appointment date, division code, category and designation code."""
 
 
 @tool
 def fetchHrOfficialDetailsByEmpNo(empNo: int) -> dict:
-    """Retrieves official appointment and career record for a specific employee by empNo."""
+    """Gets official appointment and career record for a specific employee identified by an
+    employee number, returning employee number, appointment date, division code, and category."""
 
 
 @tool
 def fetchHrOfficialDetailsByDesignation(desigCode: int) -> list:
-    """Retrieves official career details for all employees holding a specific designation."""
+    """Lists official career details for employees holding a specific designation code,
+    returning employee number, appointment date, division code, and category."""
 
 
 @tool
 def fetchHrOfficialDetailsByCategory(category: str) -> list:
-    """Retrieves official career details for all employees belonging to a specific staff category."""
+    """Lists official career details for employees belonging to a specific staff category
+    string, returning employee number, appointment date, division code, and category."""
 
 
 @tool
 def fetchHrOfficialDetailsByEmployeeStatus(empActive: str) -> list:
-    """Retrieves official career records for ALL employees filtered by employment status code."""
+    """Lists official career records for all employees filtered by a specific employment status
+    string, returning employee number, appointment date, division code, and category."""

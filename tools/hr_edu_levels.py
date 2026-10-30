@@ -5,4 +5,5 @@ from aria.catalog import tool
 
 @tool
 def fetchAllHrEduLevels() -> list:
-    """Retrieves education level master categories."""
+    """Lists education level master categories, returning the identifier and descriptive text
+    for each standard education tier."""

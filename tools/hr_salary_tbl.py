@@ -5,37 +5,41 @@ from aria.catalog import tool
 
 @tool
 def fetchAllHrSalaryTbls() -> list:
-    """Retrieves all salary scale structure records across the organisation."""
+    """Lists salary scale structures including salary code, grade, scale, initial value,
+    increment years, and amount."""
 
 
 @tool
 def fetchHrSalaryTblBySalaryCode(salaryCode: str) -> list:
-    """Retrieves salary scale details for a specific salary code (salaryCode)."""
+    """Lists salary scale records selected by salary code, returning salary grade, scale,
+    initial value and increment amount."""
 
 
 @tool
 def fetchHrSalaryTblBySalaryGrade(salaryGrade: int) -> list:
-    """Retrieves salary scale records filtered by salary grade."""
+    """Lists salary scale records selected by salary grade, returning salary code, scale,
+    initial value and increment years."""
 
 
 @tool
 def fetchHrSalaryTblBySalaryScale(salaryScale: str) -> list:
-    """Retrieves salary scale records matching a full or partial salary scale description string."""
+    """Lists salary scale records matching a description string, returning the ID, code, grade,
+    initial value, increment years and amount."""
 
 
 @tool
 def fetchHrSalaryTblBySalaryInitVal(salaryInitVal: int) -> list:
-    """Retrieves salary scale records filtered by initial basic starting salary value (salaryInitVal in
-    the configured currency)."""
+    """Lists salary scale records selected by initial basic starting salary value, returning
+    salary code, grade, scale and increment years."""
 
 
 @tool
 def fetchHrSalaryTblBySalaryIncrementYears(salaryIncremntYrs: int) -> list:
-    """Retrieves salary scale records filtered by the number of annual increment years/steps
-    (salaryIncremntYrs)."""
+    """Lists salary scale records selected by number of increment years, returning salary code,
+    grade, scale and increment amount."""
 
 
 @tool
 def fetchHrSalaryTblBySalaryIncrementAmount(salaryIncremntAmnt: int) -> list:
-    """Retrieves salary scale records filtered by annual increment step value (salaryIncremntAmnt in
-    the configured currency)."""
+    """Lists salary scale records selected by annual increment amount, returning salary code,
+    grade, scale and initial value."""

@@ -5,14 +5,17 @@ from aria.catalog import tool
 
 @tool
 def fetchAllPrCloseReasons() -> list:
-    """Retrieves master justification reasons for project closure."""
+    """Lists master justification reasons for project closure, returning identifier, project
+    type, reason code and order reference."""
 
 
 @tool
 def fetchPrCloseReasonsByPrType(prType: str) -> list:
-    """Retrieves closure reasons filtered by project type classification (prType)."""
+    """Lists closure reasons selected by project type, returning pr type, cl reason and order
+    re."""
 
 
 @tool
 def fetchPrCloseReasonsByReason(clReason: str) -> list:
-    """Retrieves closure reasons filtered by reason description keyword (clReason)."""
+    """Lists closure reasons selected by reason keyword, returning pr type, cl reason and order
+    re."""

@@ -5,9 +5,11 @@ from aria.catalog import tool
 
 @tool
 def fetchAllHrDependentRelationships() -> list:
-    """Retrieves the complete master lookup table of family relationship definitions."""
+    """Lists family relationship definitions, returning relationship label and its corresponding
+    ID."""
 
 
 @tool
 def searchHrDependentRelationshipsByName(name: str) -> list:
-    """Searches family relationship definitions by title name."""
+    """Lists family relationship definitions selected by title name, returning relationship
+    identifier and relationship name."""

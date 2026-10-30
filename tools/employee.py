@@ -5,74 +5,77 @@ from aria.catalog import tool
 
 @tool
 def fetchAllEmployees() -> list:
-    """Retrieves the authoritative complete master list of all employees in the organisation."""
+    """Lists complete employee master records, returning ID, number, title, full name, email,
+    and mobile number."""
 
 
 @tool
 def fetchAllEmployeeNames() -> list:
-    """Retrieves lightweight name and ID records for all employees."""
+    """Lists lightweight employee name records, returning employee number, full name, and name
+    with initials."""
 
 
 @tool
 def fetchEmployeeByEmail(email: str) -> dict:
-    """Retrieves the full employee record matching a specific work email address."""
+    """Gets one employee record selected by work email address, returning full name, mobile
+    number, email, and designation code."""
 
 
 @tool
 def fetchEmployeeByNicnum(nicnum: str) -> dict:
-    """Retrieves an employee record by National Identity Card (NIC) number."""
+    """Gets one employee record selected by national identity card number, returning full name,
+    mobile number, email, and designation code."""
 
 
 @tool
 def fetchEmployeesByPhone(phone: str) -> list:
-    """Retrieves employee records matching a telephone or mobile phone number."""
+    """Lists employee records selected by phone number, returning id, empno, fullname, and
+    email."""
 
 
 @tool
 def fetchEmployeesByFullname(fullname: str) -> list:
-    """Searches for employees by full name (case-insensitive partial match). Primary tool when a
-    person's name is mentioned in the prompt, or when searching for employee contact info,
-    mobile number, phone, address, NIC number (nicnum), email, designation, or division."""
+    """Lists employee records selected by full name, returning full name, mobile number, email,
+    and designation code."""
 
 
 @tool
 def fetchEmployeesByName(name: str) -> list:
-    """Searches for employees by name or full name (case-insensitive partial match). Primary tool when
-    a person's name is mentioned in the prompt, or when searching for employee contact info,
-    mobile number, phone, address, NIC number (nicnum), email, designation, or division."""
+    """Lists employee records selected by name, returning full name, mobile number, email, and
+    designation code."""
 
 
 @tool
 def fetchEmployeeByName(name: str) -> list:
-    """Primary tool to search for an employee by name or full name (case-insensitive match). Use when a
-    person's name is mentioned in the prompt, or when looking up employee contact info, mobile
-    phone number, phoneResidence, residential address, NIC number (nicnum), email, designation,
-    or division."""
+    """Lists employee records selected by name, returning full name, mobile number, email, and
+    designation code."""
 
 
 @tool
 def fetchEmployeeByFullname(fullname: str) -> list:
-    """Primary tool to search for an employee by full name (case-insensitive match). Use when a
-    person's full name is mentioned in the prompt, or when looking up employee contact info,
-    mobile phone number, phoneResidence, residential address, NIC number (nicnum), email,
-    designation, or division."""
+    """Lists employee records selected by full name, returning full name, mobile number, email,
+    and designation code."""
 
 
 @tool
 def fetchEmployeesByDesigcode(desigcode: int) -> list:
-    """Retrieves all employee records holding a specific designation."""
+    """Lists employee records selected by designation code, returning employee number,
+    appointment date, division code, and category code."""
 
 
 @tool
 def fetchEmployeesByCategorycode(categorycode: str) -> list:
-    """Retrieves all employee records belonging to a specific staff category code."""
+    """Lists employee records selected by staff category code, returning employee number,
+    appointment date, division code, and designation code."""
 
 
 @tool
 def fetchEmployeesByStatus(status: str) -> list:
-    """Retrieves employee records filtered by employment status."""
+    """Lists employee records selected by employment status, returning emp no, dateof
+    appoinment, division code, and category."""
 
 
 @tool
 def fetchEmployeeByEmpno(empno: int) -> dict:
-    """Retrieves one employee's master record by employee number."""
+    """Gets one employee record selected by employee number, returning full name, mobile number,
+    email, and designation code."""

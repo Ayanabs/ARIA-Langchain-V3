@@ -5,14 +5,17 @@ from aria.catalog import tool
 
 @tool
 def fetchAllHrProjectTypes() -> list:
-    """Retrieves HR project type classification categories."""
+    """Lists HR project type classifications, returning the code, short description and full
+    description for each project category."""
 
 
 @tool
 def fetchHrProjectTypesByShortDescription(ptShortDes: str) -> list:
-    """Retrieves project types filtered by short acronym description (ptShortDes)."""
+    """Lists project types filtered by short description, returning code, short description and
+    full description."""
 
 
 @tool
 def fetchHrProjectTypesByDescription(ptDescription: str) -> list:
-    """Retrieves project types filtered by full description string (ptDescription)."""
+    """Lists project types filtered by full description, returning code, short description and
+    full description."""

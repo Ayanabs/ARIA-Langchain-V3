@@ -5,19 +5,22 @@ from aria.catalog import tool
 
 @tool
 def fetchAllPrProjectTypes() -> list:
-    """Retrieves all PR project types."""
+    """Lists all PR project types, returning pt code, pt short des and pt description."""
 
 
 @tool
 def fetchPrProjectTypeByCode(ptCode: int) -> dict:
-    """Retrieves PR project type definition by primary key project type code (ptCode )."""
+    """Gets a project type record selected by its code, returning the code, short description
+    and full description."""
 
 
 @tool
 def fetchPrProjectTypesByShortDescription(ptShortDes: str) -> list:
-    """Retrieves PR project types filtered by short description."""
+    """Lists project type records selected by their short description, returning the code, short
+    description and full description."""
 
 
 @tool
 def fetchPrProjectTypesByDescription(ptDescription: str) -> list:
-    """Retrieves PR project types filtered by full description."""
+    """Lists project type records selected by their full description, returning the code, short
+    description and full description."""

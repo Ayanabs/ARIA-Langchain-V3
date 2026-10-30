@@ -5,9 +5,11 @@ from aria.catalog import tool
 
 @tool
 def fetchAllIncompleteSources() -> list:
-    """Retrieves incomplete data source flags and error log definitions."""
+    """Lists incomplete data source flags and error logs including description and record
+    identifier."""
 
 
 @tool
 def fetchIncompleteSourcesByDescription(description: str) -> list:
-    """Retrieves incomplete source records filtered by error description text."""
+    """Lists incomplete source records filtered by error description text, returning the
+    description and record ID."""

@@ -5,4 +5,5 @@ from aria.catalog import tool
 
 @tool
 def fetchAllEmpCleanings() -> list:
-    """Retrieves duty assignments for cleaning and maintenance staff."""
+    """Lists cleaning staff duty assignments, returning employee ID, name, address, and
+    telephone number."""

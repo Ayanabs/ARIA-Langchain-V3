@@ -5,14 +5,17 @@ from aria.catalog import tool
 
 @tool
 def fetchAllHrStores() -> list:
-    """Retrieves HR store inventory item allocations."""
+    """Lists HR store inventory allocations including store identifier, serial number, and store
+    code."""
 
 
 @tool
 def fetchHrStoresByStCode(stCode: str) -> list:
-    """Retrieves store inventory items filtered by store item code (stCode)."""
+    """Lists store inventory items filtered by store code, returning the item ID, serial number
+    and store code."""
 
 
 @tool
 def fetchHrStoresBySerialNo(serialNo: int) -> list:
-    """Retrieves store inventory items filtered by asset serial number (serialNo)."""
+    """Lists store inventory items filtered by serial number, returning the item ID, serial
+    number and store code."""

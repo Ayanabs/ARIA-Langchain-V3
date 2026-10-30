@@ -5,15 +5,17 @@ from aria.catalog import tool
 
 @tool
 def fetchPrChangeHistoryBySerialNo(serialNo: int) -> list:
-    """Retrieves change history records for a project by primary key serial sequence number (serialNo
-    )."""
+    """Lists change history records selected by serial number, returning id, capital, recurrent
+    and income."""
 
 
 @tool
 def fetchPrChangeHistoryByNewApCode(newApCode: str) -> list:
-    """Retrieves change history records filtered by updated AP code (newApCode)."""
+    """Lists change history records selected by new AP code, returning ID, serial number,
+    capital amount and recurrent amount."""
 
 
 @tool
 def fetchPrChangeHistoryByApCodeYear(apCodeYear: int) -> list:
-    """Retrieves change history records filtered by AP code year (apCodeYear)."""
+    """Lists change history records selected by AP code year, returning ID, serial number,
+    capital amount and recurrent amount."""

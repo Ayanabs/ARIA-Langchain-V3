@@ -5,4 +5,5 @@ from aria.catalog import tool
 
 @tool
 def fetchAllHrSalaryDetails() -> list:
-    """Retrieves monthly payroll processing records for all employees."""
+    """Lists monthly payroll records including salary code, grade, initial value, and initial
+    step."""

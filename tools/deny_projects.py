@@ -5,4 +5,5 @@ from aria.catalog import tool
 
 @tool
 def fetchAllDenyProjects() -> list:
-    """Retrieves rejected or denied project proposal records."""
+    """Lists rejected project proposal records, returning the project identifier, reason for
+    denial, and project code."""

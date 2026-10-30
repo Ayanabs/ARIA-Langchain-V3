@@ -5,14 +5,15 @@ from aria.catalog import tool
 
 @tool
 def fetchAllPrProjectApcodes() -> list:
-    """Retrieves all PR project AP codes."""
+    """Lists all PR project ap codes, returning id, pr code, year and ap code."""
 
 
 @tool
 def fetchPrProjectApcodesByApcode(apcode: str) -> list:
-    """Retrieves PR project AP codes filtered by apcode string."""
+    """Lists project AP codes filtered by an AP code string, returning project code, year, and
+    AP code."""
 
 
 @tool
 def fetchPrProjectApcodesByYear(year: int) -> list:
-    """Retrieves PR project AP codes filtered by year."""
+    """Lists project AP codes filtered by a year, returning project code, year, and AP code."""

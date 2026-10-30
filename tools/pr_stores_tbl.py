@@ -5,14 +5,16 @@ from aria.catalog import tool
 
 @tool
 def fetchAllPrStoresTbl() -> list:
-    """Retrieves all PR stores records."""
+    """Lists all PR stores records, returning st id, serial no and st code."""
 
 
 @tool
 def fetchPrStoresTblByStCode(stCode: str) -> list:
-    """Retrieves PR stores records filtered by store code."""
+    """Lists store records selected by store code, returning store identifier, serial number,
+    and store code."""
 
 
 @tool
 def fetchPrStoresTblBySerialNo(serialNo: int) -> list:
-    """Retrieves PR stores records filtered by serial number."""
+    """Lists store records selected by serial number, returning store identifier, serial number,
+    and store code."""

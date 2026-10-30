@@ -5,19 +5,23 @@ from aria.catalog import tool
 
 @tool
 def fetchAllPrExtends() -> list:
-    """Retrieves all PR extension records."""
+    """Lists project extension records, returning identifier, extension identifier, extended
+    date and end date."""
 
 
 @tool
 def fetchPrExtendsByExId(exId: int) -> list:
-    """Retrieves PR extension records filtered by extension ID (ex_id)."""
+    """Lists extension records filtered by an extension identifier, returning id, extension
+    identifier, extended date, and entry date."""
 
 
 @tool
 def fetchPrExtendsByExtendedDate(extendedDate: str) -> list:
-    """Retrieves PR extension records filtered by extended date (YYYY-MM-DD)."""
+    """Lists extension records filtered by an extended date, returning id, extension identifier,
+    extended date, and entry date."""
 
 
 @tool
 def fetchPrExtendsByEdate(edate: str) -> list:
-    """Retrieves PR extension records filtered by edate (YYYY-MM-DD)."""
+    """Lists extension records filtered by an entry date, returning id, extension identifier,
+    extended date, and entry date."""

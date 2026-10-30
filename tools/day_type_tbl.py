@@ -5,4 +5,5 @@ from aria.catalog import tool
 
 @tool
 def fetchAllDayTypes() -> list:
-    """Retrieves all calendar day type classifications."""
+    """Lists all calendar day type classifications, returning the day type identifier and day
+    type name."""

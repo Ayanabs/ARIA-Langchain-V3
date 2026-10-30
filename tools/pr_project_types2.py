@@ -5,4 +5,4 @@ from aria.catalog import tool
 
 @tool
 def fetchAllPrProjectTypes2() -> list:
-    """Retrieves all PR project types 2."""
+    """Lists all PR project types 2, returning id and pro type."""

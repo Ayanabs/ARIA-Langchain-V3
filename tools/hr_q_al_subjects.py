@@ -5,9 +5,10 @@ from aria.catalog import tool
 
 @tool
 def fetchAllHrQALSubjects() -> list:
-    """Retrieves G.C.E. Advanced Level (A/L) subject master directory."""
+    """Lists A/L subject directory records, returning subject code and subject name."""
 
 
 @tool
 def fetchHrQALSubjectsBySubjectName(subName: str) -> list:
-    """Retrieves G.C.E. A/L subject details by subject name."""
+    """Lists G.C.E. A/L subject details by subject name, returning subject code and subject
+    name."""

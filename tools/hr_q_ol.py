@@ -5,30 +5,35 @@ from aria.catalog import tool
 
 @tool
 def fetchAllHrQOL() -> list:
-    """Retrieves G.C.E. Ordinary Level (O/L) examination results for all employees."""
+    """Lists O/L examination result records, returning employee number, exam year, subject name
+    and subject grade."""
 
 
 @tool
 def fetchHrQOLByEmployeeNo(empNo: str) -> list:
-    """Retrieves G.C.E. Ordinary Level (O/L) examination subject results for an employee by Employee
-    Number (empNo)."""
+    """Lists G.C.E. O/L examination results for an employee by number, returning subject name,
+    year and grade."""
 
 
 @tool
 def fetchHrQOLByOLIndex(oLIndex: str) -> list:
-    """Retrieves G.C.E. O/L exam records by Candidate Index Number (oLIndex)."""
+    """Lists G.C.E. O/L exam records selected by candidate index number, returning employee
+    number, subject name, grade and year."""
 
 
 @tool
 def fetchHrQOLByOLSubNo(oLSubNo: str) -> list:
-    """Retrieves G.C.E. O/L exam records by Subject Number (oLSubNo )."""
+    """Lists G.C.E. O/L exam records selected by subject number, returning employee number,
+    subject name, grade and year."""
 
 
 @tool
 def fetchHrQOLByOLSubGrade(oLSubGrade: str) -> list:
-    """Retrieves G.C.E. O/L exam records by Subject Grade."""
+    """Lists G.C.E. O/L exam records selected by subject grade, returning employee number,
+    subject name, index and year."""
 
 
 @tool
 def fetchHrQOLByOLYear(oLYear: int) -> list:
-    """Retrieves G.C.E. O/L exam records by Examination Year."""
+    """Lists G.C.E. O/L exam records selected by examination year, returning employee number,
+    subject name, grade and index."""

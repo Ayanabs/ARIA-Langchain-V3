@@ -5,4 +5,4 @@ from aria.catalog import tool
 
 @tool
 def fetchAllHrQOLSubjects() -> list:
-    """Retrieves G.C.E. Ordinary Level (O/L) subject master directory."""
+    """Lists O/L subject directory records, returning subject code and subject name."""

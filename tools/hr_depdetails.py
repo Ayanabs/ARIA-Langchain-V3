@@ -5,19 +5,23 @@ from aria.catalog import tool
 
 @tool
 def fetchAllHrDepDetails() -> list:
-    """Retrieves dependent family member records for all employees."""
+    """Lists dependent family member records, returning ID, employee number, relationship, name,
+    and birthday."""
 
 
 @tool
 def fetchHrDepDetailsByEmployee(empNo: int) -> list:
-    """Retrieves dependent family member records for a specific employee by Employee Number (empNo)."""
+    """Lists dependent family member records selected by employee number, returning
+    relationship, name, birthday, and idno."""
 
 
 @tool
 def fetchHrDepDetailsByRelationship(relationship: int) -> list:
-    """Retrieves employee dependent records filtered by numeric family relationship ID."""
+    """Lists dependent family member records selected by relationship ID, returning emp no,
+    name, birthday, and idno."""
 
 
 @tool
 def searchHrDepDetailsByName(name: str) -> list:
-    """Searches employee dependent records by full or partial dependent name."""
+    """Lists employee dependent records selected by dependent name, returning employee number,
+    relationship, name, and birthday."""

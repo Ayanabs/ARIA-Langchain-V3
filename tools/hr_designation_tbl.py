@@ -5,14 +5,17 @@ from aria.catalog import tool
 
 @tool
 def fetchAllHrDesignations() -> list:
-    """Retrieves all HR designation records across the organisation."""
+    """Lists all HR designation records, returning the code, full name, salary code and cadre
+    type for each position."""
 
 
 @tool
 def searchHrDesignationsByName(name: str) -> list:
-    """Searches HR designations by full or partial job title/name."""
+    """Lists HR designations selected by job title name, returning designation code, designation
+    name, salary code, and cadre."""
 
 
 @tool
 def fetchHrDesignationsBySalaryCode(salaryCode: int) -> list:
-    """Retrieves all designations associated with a specific salary scale code."""
+    """Lists designation records selected by salary code, returning desig code, designation,
+    salary code, and ap cadre."""

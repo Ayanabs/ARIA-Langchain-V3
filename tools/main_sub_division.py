@@ -5,14 +5,17 @@ from aria.catalog import tool
 
 @tool
 def fetchAllMainSubDivisions() -> list:
-    """Retrieves parent-child sub-division hierarchy mappings."""
+    """Lists parent-child sub-division hierarchy mappings, returning division identifier, main
+    division code and child division code."""
 
 
 @tool
 def fetchMainSubDivisionsByMainDivCode(mainDivCode: str) -> list:
-    """Retrieves sub-divisions belonging to a specific parent division using mainDivCode."""
+    """Lists sub-division records selected by main division code, returning division ID, main
+    division code and child division code."""
 
 
 @tool
 def fetchMainSubDivisionsByChildDivCode(childDivCode: int) -> list:
-    """Retrieves parent division mapping for a specific sub-division using childDivCode."""
+    """Lists parent division records selected by child division code, returning division ID,
+    main division code and child division code."""

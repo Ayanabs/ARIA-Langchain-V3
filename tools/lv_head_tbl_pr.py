@@ -5,14 +5,17 @@ from aria.catalog import tool
 
 @tool
 def fetchLeaveHeadPrsByEmpNo(empNo: int) -> list:
-    """Retrieves project lead leave approval records for an employee by Employee Number (empNo )."""
+    """Lists project lead leave approval records for an employee by their number, returning the
+    approval ID, employee number, and head employee number."""
 
 
 @tool
 def fetchLeaveHeadPrsByHodEmpNo(hodEmpNo: int) -> list:
-    """Retrieves project lead leave approval records by Project Head Employee Number (hodEmpNo )."""
+    """Lists project lead leave approval records by a specific project head's employee number,
+    returning the approval ID, employee number, and head employee number."""
 
 
 @tool
 def fetchLeaveHeadPrsByPrHeadEmpNo(prHeadEmpNo: int) -> list:
-    """Retrieves leave applications reviewed by a specific Project Director/Manager using PrHead_EmpNo."""
+    """Lists leave applications reviewed by a specific project director or manager using their
+    employee number, returning the approval ID, employee number, and head employee number."""

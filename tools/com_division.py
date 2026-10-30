@@ -5,5 +5,5 @@ from aria.catalog import tool
 
 @tool
 def fetchAllComDivisions() -> list:
-    """Retrieves internal sub-division hierarchy linkage records (divId, mdivCode, tdivCode)
-    NOTE: This is NOT the Communication Division (COM) or general division catalog."""
+    """Lists internal sub-division hierarchy linkage records, returning the division identifier,
+    main division code, and target division code."""

@@ -5,4 +5,4 @@ from aria.catalog import tool
 
 @tool
 def fetchAllHrQClasses() -> list:
-    """Retrieves academic degree class/grade honor classifications."""
+    """Lists academic degree class records, returning identifier and description."""

@@ -5,9 +5,11 @@ from aria.catalog import tool
 
 @tool
 def fetchEmpShortLeavesByEmpNo(empNo: int) -> list:
-    """Retrieves short leave records for one employee by employee number."""
+    """Lists short leave records for an employee selected by employee number, returning leave
+    type, comment, start time, and end time."""
 
 
 @tool
 def fetchEmpShortLeavesByAttDtId(attDtId: int) -> list:
-    """Retrieves short leave records for one attendance date ID."""
+    """Lists short leave records for an attendance date ID, returning the employee number, start
+    time, and end time."""

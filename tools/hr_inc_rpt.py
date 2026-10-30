@@ -5,27 +5,30 @@ from aria.catalog import tool
 
 @tool
 def fetchAllHrIncrementReports() -> list:
-    """Retrieves annual salary increment report records for all employees."""
+    """Lists annual salary increment reports, returning the name, designation, salary scale,
+    point, date, value and basic salary."""
 
 
 @tool
 def fetchHrIncrementReportsByDesignation(designation: int) -> list:
-    """Retrieves annual salary increment reports filtered by Designation title."""
+    """Lists salary increment records filtered by a specific designation code, returning name,
+    designation, present salary point, and increment value."""
 
 
 @tool
 def fetchHrIncrementReportsByIncrementDate(incDate: str) -> list:
-    """Retrieves salary increment reports filtered by scheduled increment date (incDate, Format: YYYY-
-    MM-DD)."""
+    """Lists salary increment records filtered by a specific scheduled increment date string,
+    returning name, designation, present salary point, and increment value."""
 
 
 @tool
 def fetchHrIncrementReportsByIncrementValue(incValue: int) -> list:
-    """Retrieves salary increment reports filtered by annual increment monetary step value (incValue in
-    the configured currency)."""
+    """Lists salary increment records filtered by a specific monetary increment step value,
+    returning name, designation, present salary point, and increment value."""
 
 
 @tool
 def fetchHrIncrementReportsByDateRange() -> list:
-    """Retrieves employee salary increments, annual increment reports, and increment step values whose
-    scheduled dates fall within the calendar date range [startDate, endDate]."""
+    """Lists salary increment records for employees whose scheduled dates fall within a
+    specified calendar date range, returning name, designation, present salary point, and
+    increment value."""

@@ -5,25 +5,28 @@ from aria.catalog import tool
 
 @tool
 def fetchAllDivisions() -> list:
-    """Retrieves all institute division records."""
+    """Lists division records, returning division code, name, short code, and head of division."""
 
 
 @tool
 def fetchDivisionByCode(divisioncode: int) -> dict:
-    """Retrieves division details by numeric primary division code (divisioncode)."""
+    """Gets one division record selected by its numeric code, returning the name, short code,
+    and head of division."""
 
 
 @tool
 def fetchDivisionsByHod(hodEmpno: int) -> list:
-    """Retrieves division records led by a specific Head of Division (HOD) using their employee number
-    (empno)."""
+    """Lists divisions led by a specific employee number, returning the division name, short
+    code, and director general."""
 
 
 @tool
 def fetchDivisionByName(name: str) -> dict:
-    """Retrieves one division by its full name."""
+    """Gets one division record selected by its full name, returning the code, short code, and
+    head of division."""
 
 
 @tool
 def fetchDivisionByShortCode(shCode: str) -> dict:
-    """Retrieves one division by its short code."""
+    """Gets one division record selected by its short code, returning the name, numeric code,
+    and head of division."""

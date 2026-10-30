@@ -5,9 +5,9 @@ from aria.catalog import tool
 
 @tool
 def fetchAllHrQGrades() -> list:
-    """Retrieves examination grade symbols and pass levels."""
+    """Lists examination grade symbol records, returning grade number and grade name."""
 
 
 @tool
 def searchHrQGradesByName(name: str) -> list:
-    """Searches examination grade symbols by grade name or code."""
+    """Lists grade records matching the name parameter, returning grade number and grade name."""

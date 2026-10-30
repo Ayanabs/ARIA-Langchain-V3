@@ -5,4 +5,5 @@ from aria.catalog import tool
 
 @tool
 def fetchAllSaLocations() -> list:
-    """Retrieves Space Applications Division satellite ground station and field site locations."""
+    """Lists location records, returning the location ID, building ID, division ID, location
+    details and short form."""

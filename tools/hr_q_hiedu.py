@@ -5,9 +5,11 @@ from aria.catalog import tool
 
 @tool
 def fetchAllHrQHiEdus() -> list:
-    """Retrieves higher education qualification master list."""
+    """Lists higher education qualification records, returning employee number, diploma, degree,
+    certificate, masters, PhD and professional qualification fields."""
 
 
 @tool
 def fetchHrQHieduByEmpNo(empNo: str) -> list:
-    """Retrieves higher education qualifications for a specific employee by Employee Number (empNo )."""
+    """Lists higher education qualifications for an employee by number, returning diploma,
+    degree, masters and PhD fields."""

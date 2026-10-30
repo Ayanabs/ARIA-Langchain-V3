@@ -5,31 +5,35 @@ from aria.catalog import tool
 
 @tool
 def fetchAllHrQAL() -> list:
-    """Retrieves G.C.E. Advanced Level (A/L) examination results for all employees."""
+    """Lists A/L examination result records, returning employee number, exam year, subject name
+    and subject grade."""
 
 
 @tool
 def fetchHrQALByEmployeeNo(empNo: str) -> list:
-    """Retrieves G.C.E. Advanced Level (A/L) examination subject results for an employee by Employee
-    Number (empNo)."""
+    """Lists A/L examination results for an employee by employee number, returning examination
+    year, subject name and grade."""
 
 
 @tool
 def fetchHrQALByALIndex(aLIndex: str) -> list:
-    """Retrieves A/L examination records filtered by G.C.E. Advanced Level Examination Index Number
-    (aLIndex)."""
+    """Lists A/L examination records filtered by index number, returning employee number,
+    examination year, subject name and grade."""
 
 
 @tool
 def fetchHrQALByALSubNo(aLSubNo: str) -> list:
-    """Retrieves A/L examination records filtered by Subject Number/Code (aLSubNo)."""
+    """Lists A/L examination records filtered by subject code, returning employee number,
+    examination year, subject name and grade."""
 
 
 @tool
 def fetchHrQALByALSubGrade(aLSubGrade: str) -> list:
-    """Retrieves A/L examination records filtered by Subject Grade."""
+    """Lists A/L examination records filtered by subject grade, returning employee number,
+    examination year, subject name and grade."""
 
 
 @tool
 def fetchHrQALByALYear(aLYear: int) -> list:
-    """Retrieves A/L examination records filtered by examination year."""
+    """Lists A/L examination records filtered by examination year, returning employee number,
+    subject code, subject name and grade."""

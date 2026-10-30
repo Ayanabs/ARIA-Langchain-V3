@@ -5,14 +5,16 @@ from aria.catalog import tool
 
 @tool
 def fetchAllPrDenyClosedprjs() -> list:
-    """Retrieves rejected project closure request logs."""
+    """Lists rejected project closure request logs, returning close reason and project code."""
 
 
 @tool
 def fetchPrDenyClosedprjByPCode(pCode: str) -> dict:
-    """Retrieves rejected project closure request log for a specific project by Project Code (pCode )."""
+    """Gets a rejected project closure record selected by project code, returning close reason
+    and pcode."""
 
 
 @tool
 def fetchPrDenyClosedprjByCloseReason(closeReason: str) -> list:
-    """Retrieves denied project closures filtered by close reason keyword."""
+    """Lists denied project closures selected by close reason keyword, returning close reason
+    and pcode."""

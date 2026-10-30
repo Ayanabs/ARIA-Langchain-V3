@@ -5,14 +5,17 @@ from aria.catalog import tool
 
 @tool
 def fetchAllPrDenyProjects() -> list:
-    """Retrieves denied PR project proposal records."""
+    """Lists denied project proposal records, returning identifier, reason, date time, user
+    details and project code."""
 
 
 @tool
 def fetchPrDenyProjectsByPCode(pCode: str) -> list:
-    """Retrieves denial records for a specific project by Project Code (pCode )."""
+    """Lists denial records for a project by its code, returning id, reason, date time, and user
+    type."""
 
 
 @tool
 def fetchPrDenyProjectsByReason(reason: str) -> list:
-    """Retrieves denied projects filtered by denial reason keyword."""
+    """Lists denied projects filtered by a reason keyword, returning id, reason, date time, and
+    user type."""

@@ -5,22 +5,23 @@ from aria.catalog import tool
 
 @tool
 def fetchAllEmpLeaves() -> list:
-    """Retrieves all employee leave records across the entire organisation. Each record contains:
-    empNo, leaveTypeId, startDate, endDate, leaveDays count, reason, and approval status. Use
-    for organisation-wide leave auditing."""
+    """Lists employee leave records, returning leave ID, employee number, type ID, and days
+    count."""
 
 
 @tool
 def fetchEmpLeavesByEmployee(empNo: int) -> list:
-    """Retrieves leave records and leave history for a specific employee by employee number (empNo)."""
+    """Lists leave records for an employee selected by their number, returning the type ID,
+    number of days, and attendance date ID."""
 
 
 @tool
 def fetchEmpLeavesByType(leaveTypeId: int) -> list:
-    """Retrieves leave records filtered by a specific leave type ID."""
+    """Lists leave records filtered by a specific type ID, returning the employee number, number
+    of days, and attendance date ID."""
 
 
 @tool
 def fetchOverseasEmpLeaves() -> list:
-    """Retrieves all overseas private and official foreign leave records for employees. Contains
-    details of international travel approvals and duration."""
+    """Lists overseas leave records for employees, returning leave ID, employee number, leave
+    type ID and number of days."""

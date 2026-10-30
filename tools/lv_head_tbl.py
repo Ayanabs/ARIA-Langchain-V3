@@ -5,15 +5,18 @@ from aria.catalog import tool
 
 @tool
 def fetchAllLeaveHeads() -> list:
-    """Retrieves Head of Division (HOD) leave recommendation and approval records."""
+    """Lists head of division leave recommendation records, returning hod identifier, employee
+    number and hod employee number."""
 
 
 @tool
 def fetchLeaveHeadsByEmpNo(empNo: int) -> list:
-    """Retrieves HOD leave recommendations for an employee by Employee Number (empNo )."""
+    """Lists HOD leave recommendations for an employee by their number, returning the
+    recommendation ID, employee number, and head employee number."""
 
 
 @tool
 def fetchLeaveHeadsByHodEmpNo(hodEmpNo: int) -> list:
-    """Retrieves leave applications reviewed or recommended by a specific Head of Division using
-    Head_EmpNo (hodEmpNo )."""
+    """Lists leave applications reviewed or recommended by a specific head of division using
+    their employee number, returning the recommendation ID, employee number, and head employee
+    number."""

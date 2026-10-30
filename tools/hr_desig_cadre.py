@@ -5,4 +5,5 @@ from aria.catalog import tool
 
 @tool
 def fetchAllHrDesigCadres() -> list:
-    """Retrieves designation cadre allocation limits across divisions."""
+    """Lists designation cadre allocation limits, returning designation code and various
+    capacity allocation fields."""

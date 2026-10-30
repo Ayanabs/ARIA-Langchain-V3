@@ -5,4 +5,5 @@ from aria.catalog import tool
 
 @tool
 def fetchAllDesignations() -> list:
-    """Retrieves all designation job titles across the organisation."""
+    """Lists all designation job titles across the organisation, returning the designation code,
+    designation name, and main identifier."""

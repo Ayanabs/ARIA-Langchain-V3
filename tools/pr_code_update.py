@@ -5,14 +5,17 @@ from aria.catalog import tool
 
 @tool
 def fetchAllPrCodeUpdates() -> list:
-    """Retrieves historical project code remapping logs."""
+    """Lists historical project code remapping logs, returning recurrence flag, capital status,
+    expected income, old year and type."""
 
 
 @tool
 def fetchPrCodeUpdatesByPRCode(pRCode: str) -> list:
-    """Retrieves project code update records for a specific project code (pRCode )."""
+    """Lists project code updates selected by project code, returning recurrent, capital and
+    expected income."""
 
 
 @tool
 def fetchPrCodeUpdatesByAcPlCode(aCPlCode: str) -> list:
-    """Retrieves project code update records filtered by accounting plan code (aCPlCode)."""
+    """Lists project code updates selected by accounting plan code, returning recurrent, capital
+    and expected income."""
