@@ -10,6 +10,7 @@ from dataclasses import dataclass, field
 from typing import Any
 
 from aria.catalog.config import ToolBinding
+from aria.catalog.contract_keys import consumed_keys, produced_keys
 from aria.catalog.declaration import ToolDeclaration, ToolParameter
 from aria.catalog.keys import KeySet
 from aria.catalog.openapi import OpenApiContract, Operation, OperationParameter
@@ -88,8 +89,11 @@ def validate_tool(
 
     parameter_map, mapping_problems = _map_parameters(declaration, binding, operation)
     problems += mapping_problems
-    problems += _check_consumes(declaration, binding, key_set)
-    problems += _check_produces(binding, operation, key_set)
+    # Keys marked in the contract, overridden by any the configuration names for the same key.
+    consumes = {**consumed_keys(operation, parameter_map), **binding.consumes}
+    produces = {**produced_keys(operation), **binding.produces}
+    problems += _check_consumes(declaration, consumes, key_set)
+    problems += _check_produces(produces, operation, key_set)
 
     if problems:
         return None, problems
@@ -100,8 +104,8 @@ def validate_tool(
             operation=operation,
             parameter_map=parameter_map,
             fixed=dict(binding.fixed),
-            consumes={key_id: tuple(names) for key_id, names in binding.consumes.items()},
-            produces={key_id: tuple(names) for key_id, names in binding.produces.items()},
+            consumes={key_id: tuple(names) for key_id, names in consumes.items()},
+            produces={key_id: tuple(names) for key_id, names in produces.items()},
         ),
         [],
     )
@@ -173,9 +177,11 @@ def _check_parameter_pair(
     return None
 
 
-def _check_consumes(declaration: ToolDeclaration, binding: ToolBinding, key_set: KeySet) -> list[str]:
+def _check_consumes(
+    declaration: ToolDeclaration, consumes: dict[str, list[str]], key_set: KeySet
+) -> list[str]:
     problems = []
-    for key_id, names in binding.consumes.items():
+    for key_id, names in consumes.items():
         key = key_set.get(key_id)
         if key is None:
             problems.append(_undeclared_key(key_id, key_set))
@@ -190,9 +196,9 @@ def _check_consumes(declaration: ToolDeclaration, binding: ToolBinding, key_set:
     return problems
 
 
-def _check_produces(binding: ToolBinding, operation: Operation, key_set: KeySet) -> list[str]:
+def _check_produces(produces: dict[str, list[str]], operation: Operation, key_set: KeySet) -> list[str]:
     problems = []
-    for key_id, response_fields in binding.produces.items():
+    for key_id, response_fields in produces.items():
         key = key_set.get(key_id)
         if key is None:
             problems.append(_undeclared_key(key_id, key_set))

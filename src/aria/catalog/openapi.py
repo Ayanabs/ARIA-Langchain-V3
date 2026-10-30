@@ -8,6 +8,9 @@ from aria.catalog.config import OperationRef
 
 HTTP_METHODS = ("get", "put", "post", "delete", "patch", "head", "options")
 
+# OpenAPI extension that marks a parameter or response field as carrying a declared key.
+KEY_EXTENSION = "x-aria-key"
+
 # How deep nested response objects are flattened into dotted field paths. Keys sit near the top of
 # a record; deeper nesting only grows the field list.
 MAX_FIELD_DEPTH = 3
@@ -19,6 +22,8 @@ class OperationParameter:
     location: str
     required: bool
     type: str | None
+    # The declared key this parameter takes, when the contract marks it.
+    key: str | None = None
 
 
 @dataclass(frozen=True)
@@ -27,6 +32,8 @@ class ResponseShape:
 
     is_list: bool
     fields: dict[str, str | None] = field(default_factory=dict)
+    # Dotted field path -> the declared key the contract marks it as carrying.
+    key_fields: dict[str, str] = field(default_factory=dict)
 
 
 @dataclass(frozen=True)
@@ -98,6 +105,7 @@ def _read_operation(resolver, path: str, method: str, spec: dict, shared_paramet
             location=raw.get("in"),
             required=bool(raw.get("required")) or raw.get("in") == "path",
             type=resolver.json_type(raw.get("schema") or {}),
+            key=_key_marker(raw),
         )
         for raw in by_identity.values()
     )
@@ -127,8 +135,16 @@ def _read_response(resolver, responses: dict) -> ResponseShape | None:
     if is_list:
         schema = resolver.resolve(schema.get("items") or {})
     fields: dict[str, str | None] = {}
-    resolver.collect_fields(schema, prefix="", depth=1, fields=fields, seen=frozenset())
-    return ResponseShape(is_list=is_list, fields=fields)
+    key_fields: dict[str, str] = {}
+    resolver.collect_fields(
+        schema, prefix="", depth=1, fields=fields, key_fields=key_fields, seen=frozenset()
+    )
+    return ResponseShape(is_list=is_list, fields=fields, key_fields=key_fields)
+
+
+def _key_marker(spec: dict) -> str | None:
+    value = spec.get(KEY_EXTENSION)
+    return value if isinstance(value, str) and value else None
 
 
 class _SchemaResolver:
@@ -159,14 +175,25 @@ class _SchemaResolver:
     def json_type(self, schema: dict) -> str | None:
         return self.resolve(schema).get("type")
 
-    def collect_fields(self, schema: dict, *, prefix: str, depth: int, fields: dict, seen: frozenset) -> None:
+    def collect_fields(
+        self, schema: dict, *, prefix: str, depth: int, fields: dict, key_fields: dict, seen: frozenset
+    ) -> None:
         for name, raw_property in (schema.get("properties") or {}).items():
             path = f"{prefix}{name}"
             ref = raw_property.get("$ref")
             resolved = self.resolve(raw_property)
             fields[path] = resolved.get("type") or ("object" if resolved.get("properties") else None)
+            # The marker may sit on the property itself or on the schema it refers to.
+            key = _key_marker(raw_property) or _key_marker(resolved)
+            if key:
+                key_fields[path] = key
             nested = resolved.get("properties") and depth < MAX_FIELD_DEPTH and ref not in seen
             if nested:
                 self.collect_fields(
-                    resolved, prefix=f"{path}.", depth=depth + 1, fields=fields, seen=seen | {ref}
+                    resolved,
+                    prefix=f"{path}.",
+                    depth=depth + 1,
+                    fields=fields,
+                    key_fields=key_fields,
+                    seen=seen | {ref},
                 )

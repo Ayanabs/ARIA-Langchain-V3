@@ -25,26 +25,37 @@ class EvidencePacket:
 
 
 def pack_evidence(goal: str, outcome: ChainOutcome, budget_tokens: int) -> EvidencePacket:
-    rows = outcome.goal_rows
+    budget_bytes = max(budget_tokens - PROMPT_OVERHEAD_TOKENS, 0) * BYTES_PER_TOKEN_ESTIMATE
     if outcome.status != "complete":
         text = f"No data was retrieved. Status: {outcome.status}. Reason: {outcome.reason}."
         if outcome.candidates:
-            text += f" {len(outcome.candidates)} records matched:\n" + _rows_text(outcome.candidates)
+            # Candidates are budgeted like evidence: a lookup can match far more records than fit.
+            shown = _rows_within(outcome.candidates, budget_bytes)
+            text += f" {len(outcome.candidates)} records matched"
+            if len(shown) < len(outcome.candidates):
+                text += f"; the first {len(shown)} are shown"
+            text += ":\n" + _rows_text(shown)
         return EvidencePacket(text=text, total_rows=0, shown_rows=0)
 
-    budget_bytes = max(budget_tokens - PROMPT_OVERHEAD_TOKENS, 0) * BYTES_PER_TOKEN_ESTIMATE
-    shown = []
-    used = 0
-    for row in rows:
-        line = json.dumps(row, ensure_ascii=False, default=str)
-        if used + len(line.encode("utf-8")) > budget_bytes:
-            break
-        shown.append(row)
-        used += len(line.encode("utf-8")) + 1
+    rows = outcome.goal_rows
+    shown = _rows_within(rows, budget_bytes)
     header = f"Source S1: {goal}, {len(rows)} records in total"
     if len(shown) < len(rows):
         header += f"; only the first {len(shown)} are shown, so do not total or count from these rows"
     return EvidencePacket(text=f"{header}.\n{_rows_text(shown)}", total_rows=len(rows), shown_rows=len(shown))
+
+
+def _rows_within(rows: list[dict], budget_bytes: int) -> list[dict]:
+    """The leading rows whose serialized size fits the byte budget."""
+    shown = []
+    used = 0
+    for row in rows:
+        size = len(json.dumps(row, ensure_ascii=False, default=str).encode("utf-8")) + 1
+        if used + size > budget_bytes:
+            break
+        shown.append(row)
+        used += size
+    return shown
 
 
 def _rows_text(rows: list[dict]) -> str:
