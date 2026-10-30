@@ -10,3 +10,5 @@ dist/
 build/
 *.egg-info/
 .pytest-tmp/
+# Local prompt history and other runtime logs (contain users' questions).
+logs/

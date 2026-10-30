@@ -166,6 +166,17 @@ class ChatsConfig(BaseModel):
     max_chats_per_owner: int = Field(default=200, ge=1)
 
 
+class ObservabilityConfig(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    # Prompt history holds users' questions, so it lives in an ignored local folder and is served
+    # only to administrators.
+    capture_prompts: bool = True
+    prompt_history_file: Path = Path("logs/prompt-history.jsonl")
+    max_prompts: int = Field(default=2000, ge=1)
+    retention_days: int = Field(default=30, ge=1)
+
+
 class DeploymentConfig(BaseModel):
     """The YAML deployment file. Unknown sections are rejected so typos surface at startup."""
 
@@ -179,6 +190,7 @@ class DeploymentConfig(BaseModel):
     catalog: CatalogConfig = CatalogConfig()
     prompts: PromptsConfig = PromptsConfig()
     chats: ChatsConfig = ChatsConfig()
+    observability: ObservabilityConfig = ObservabilityConfig()
     # The catalog and the prompts may each live in their own file, relative to this one.
     catalog_file: Path | None = None
     prompts_file: Path | None = None

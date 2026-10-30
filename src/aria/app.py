@@ -9,9 +9,10 @@ from contextlib import asynccontextmanager
 import httpx
 from fastapi import FastAPI
 
-from aria.api import chats, health
+from aria.api import chats, health, observability
 from aria.catalog.service import CatalogService
 from aria.chats.store import InMemoryChatStore
+from aria.observability.store import PromptStore
 from aria.preflight import run_preflight
 from aria.settings import Settings, get_settings
 
@@ -65,6 +66,11 @@ def create_app(
     app.state.catalog_service = catalog_service
     # Not persisted yet: chats live in memory until the chats database store is added.
     app.state.chat_store = InMemoryChatStore(settings.deployment.chats.max_chats_per_owner)
+    history = settings.deployment.observability
+    app.state.prompt_store = PromptStore(
+        history.prompt_history_file, history.max_prompts, history.retention_days
+    )
     app.include_router(health.router)
     app.include_router(chats.router)
+    app.include_router(observability.router)
     return app

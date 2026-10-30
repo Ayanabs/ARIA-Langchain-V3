@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import asyncio
 import itertools
+import time
 from collections.abc import Awaitable, Callable, Mapping
 from dataclasses import dataclass, field
 from typing import Any
@@ -50,11 +51,17 @@ class CallRecord:
     key_sources: dict[str, str] = field(default_factory=dict)
     rows: list[dict] = field(default_factory=list)
     error: str | None = None
+    duration_ms: int | None = None
+    # HTTP status of a failed backend call, when there was a response.
+    status_code: int | None = None
 
 
 @dataclass
 class ChainOutcome:
     status: str  # "complete", "needs_clarification", "missing" or "failed"
+    # Why the chain stopped, as a stable label: "incomplete_plan", "fan_out_limit", "argument_error",
+    # "invented_key", "backend_error", "no_records", "missing_key_value" or "ambiguous".
+    kind: str | None = None
     calls: list[CallRecord] = field(default_factory=list)
     goal_rows: list[dict] = field(default_factory=list)
     reason: str | None = None
@@ -83,7 +90,7 @@ async def run_chain(
     `arguments` holds, per tool, the non-key arguments taken from the user's words.
     """
     if not plan.complete:
-        return ChainOutcome(status="missing", reason=_describe_incomplete_plan(plan))
+        return ChainOutcome(status="missing", kind="incomplete_plan", reason=_describe_incomplete_plan(plan))
 
     runner = _ChainRunner(plan, tools, invoke, arguments or {}, supplied or {}, select, max_fan_out)
     try:
@@ -139,6 +146,7 @@ class _ChainRunner:
             raise _StopChain(
                 ChainOutcome(
                     status="failed",
+                    kind="fan_out_limit",
                     reason=f"{tool.name} would need {combinations} calls; the limit is {self.max_fan_out}",
                 )
             )
@@ -154,7 +162,11 @@ class _ChainRunner:
                         arguments[parameter_name] = coerce_key_value(value, parameter.type)
                     except ArgumentError as error:
                         raise _StopChain(
-                            ChainOutcome(status="failed", reason=f"{tool.name}.{parameter_name}: {error}")
+                            ChainOutcome(
+                                status="failed",
+                                kind="argument_error",
+                                reason=f"{tool.name}.{parameter_name}: {error}",
+                            )
                         ) from error
                     sources[parameter_name] = source
             argument_sets.append((arguments, sources))
@@ -166,6 +178,7 @@ class _ChainRunner:
             raise _StopChain(
                 ChainOutcome(
                     status="failed",
+                    kind="invented_key",
                     reason=(
                         f"{tool.name}: key arguments {', '.join(invented)} must come from an earlier "
                         "result, the prompt or the caller's identity"
@@ -194,6 +207,7 @@ class _ChainRunner:
             raise _StopChain(
                 ChainOutcome(
                     status="missing",
+                    kind="missing_key_value",
                     reason=f"{producer_name} returned no {key_id} value for {tool.name}",
                 )
             )
@@ -202,17 +216,21 @@ class _ChainRunner:
     async def _call(self, tool: CatalogTool, arguments: dict, key_sources: dict) -> list[dict]:
         record = CallRecord(tool=tool.name, arguments=arguments, key_sources=key_sources)
         self.calls.append(record)
+        started = time.perf_counter()
         try:
             request = build_request(tool, arguments)
             response = await self.invoke(tool, request)
         except ArgumentError as error:
             record.error = str(error)
-            raise _StopChain(ChainOutcome(status="failed", reason=str(error))) from error
+            outcome = ChainOutcome(status="failed", kind="argument_error", reason=str(error))
+            raise _StopChain(outcome) from error
         except Exception as error:
             record.error = f"{type(error).__name__}: {error}"
-            raise _StopChain(
-                ChainOutcome(status="failed", reason=f"{tool.name} failed: {record.error}")
-            ) from error
+            record.status_code = getattr(error, "status_code", None)
+            reason = f"{tool.name} failed: {record.error}"
+            raise _StopChain(ChainOutcome(status="failed", kind="backend_error", reason=reason)) from error
+        finally:
+            record.duration_ms = round((time.perf_counter() - started) * 1000)
         record.rows = rows_from_response(response)
         return record.rows
 
@@ -227,6 +245,7 @@ class _ChainRunner:
                 raise _StopChain(
                     ChainOutcome(
                         status="needs_clarification",
+                        kind="ambiguous",
                         reason=f"{tool.name} matched {len(rows)} records",
                         clarify_tool=tool.name,
                         candidates=rows,
@@ -234,9 +253,8 @@ class _ChainRunner:
                 )
             selected.extend(selection.rows)
         if not selected:
-            raise _StopChain(
-                ChainOutcome(status="missing", reason=f"{tool.name} returned no matching records")
-            )
+            reason = f"{tool.name} returned no matching records"
+            raise _StopChain(ChainOutcome(status="missing", kind="no_records", reason=reason))
         return selected
 
 

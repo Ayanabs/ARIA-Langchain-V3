@@ -1,8 +1,11 @@
-"""One question through the request flow: shortlist, tool choice, key chain, answer."""
+"""One question through the request flow: tool search, tool choice, key chain, answer.
+
+Every stage records into the request's trace (see observability/recording.py), so an
+administrator can see afterwards what was decided, what was called and what went wrong.
+"""
 
 from __future__ import annotations
 
-import time
 from dataclasses import dataclass, field
 from datetime import date
 
@@ -10,29 +13,28 @@ from aria.calling.chain import ChainOutcome, ToolInvoker, run_chain
 from aria.calling.selection import ToolSelection, select_tools
 from aria.catalog.catalog import ToolCatalog
 from aria.catalog.graph import ChainPlan
-from aria.models.client import ChatModel, ModelReply
+from aria.logging_setup import trace_id_var
+from aria.models.client import ChatModel, ModelError
+from aria.observability import recording
+from aria.observability.trace import RequestTrace
 from aria.prompts import PromptsConfig
-from aria.search.lexical import shortlist as lexical_shortlist
+from aria.search.lexical import expand_with_producers, rank
 from aria.synthesis.answer import EvidencePacket, pack_evidence, write_answer, write_reply
 
-
-@dataclass
-class StepTrace:
-    step: str
-    wall_ms: int
-    detail: dict = field(default_factory=dict)
+PUBLISHED = "published"
+FAILED = "error"
 
 
 @dataclass
 class PipelineResult:
     question: str
+    trace: RequestTrace
     answer: str = ""
     shortlist: list[str] = field(default_factory=list)
     selection: ToolSelection | None = None
     plan: ChainPlan | None = None
     outcome: ChainOutcome | None = None
     evidence: EvidencePacket | None = None
-    steps: list[StepTrace] = field(default_factory=list)
 
 
 async def answer_question(
@@ -44,31 +46,67 @@ async def answer_question(
     invoke: ToolInvoker,
     prompts: PromptsConfig,
     max_fan_out: int,
+    trace: RequestTrace,
 ) -> PipelineResult:
-    result = PipelineResult(question=question)
-    today = date.today().isoformat()
+    """Answer one question. A model failure is recorded in the trace and then raised."""
+    result = PipelineResult(question=question, trace=trace)
+    token = trace_id_var.set(trace.trace_id)
+    try:
+        trace.event("received", "Question received", stage="request")
+        await _search_and_select(result, catalog, tool_model, prompts)
+        await _run_chain(result, catalog, synthesis_model, invoke, max_fan_out)
+        await _write_answer(result, synthesis_model, prompts)
+        trace.finish(PUBLISHED)
+        return result
+    except ModelError as error:
+        trace.finish(FAILED, failure=error.kind)
+        raise
+    except Exception as error:
+        trace.add_issue("unexpected_error", "request", f"{type(error).__name__}: {error}")
+        trace.finish(FAILED, failure="unexpected")
+        raise
+    finally:
+        trace_id_var.reset(token)
 
-    started = time.perf_counter()
-    result.shortlist = lexical_shortlist(question, catalog, tool_model.role.profile.shortlist_k)
-    result.steps.append(StepTrace("shortlist", _since(started), {"tools": len(result.shortlist)}))
 
-    if result.shortlist:
-        selection = await select_tools(
-            question,
-            result.shortlist,
-            catalog,
-            tool_model,
-            prompts.rendered("tool_selection"),
-            today,
-        )
-        result.selection = selection
-        result.steps.append(_model_step("tool_selection", selection.reply))
+async def _search_and_select(result: PipelineResult, catalog, tool_model: ChatModel, prompts) -> None:
+    trace = result.trace
+    k = tool_model.role.profile.shortlist_k
+    with trace.stage("tool_search"):
+        ranked = rank(result.question, catalog)
+        result.shortlist = expand_with_producers([name for name, _ in ranked[:k]], catalog)
+    recording.shortlist(trace, ranked, result.shortlist, k, len(catalog.tools))
+    if not result.shortlist:
+        return
 
+    with trace.stage("tool_selection"):
+        try:
+            result.selection = await select_tools(
+                result.question,
+                result.shortlist,
+                catalog,
+                tool_model,
+                prompts.rendered("tool_selection"),
+                date.today().isoformat(),
+            )
+        except ModelError as error:
+            recording.model_failure(trace, tool_model, "tool_selection", error)
+            raise
+    recording.model_reply(trace, tool_model, "tool_selection", result.selection.reply)
+    recording.selection(trace, result.selection)
+
+
+async def _run_chain(
+    result: PipelineResult, catalog, synthesis_model: ChatModel, invoke, max_fan_out
+) -> None:
     selection = result.selection
-    if selection and selection.route == "tools" and selection.goal:
-        started = time.perf_counter()
+    if not (selection and selection.route == "tools" and selection.goal):
+        return
+    trace = result.trace
+    with trace.stage("key_chain"):
         filled = {tool: set(arguments) for tool, arguments in selection.arguments.items()}
         result.plan = catalog.plan(selection.goal, set(selection.supplied_keys), filled)
+        recording.plan(trace, result.plan, catalog)
         result.outcome = await run_chain(
             result.plan,
             catalog.tools,
@@ -77,41 +115,29 @@ async def answer_question(
             supplied=selection.supplied_keys,
             max_fan_out=max_fan_out,
         )
-        result.steps.append(
-            StepTrace(
-                "tool_calls",
-                _since(started),
-                {"status": result.outcome.status, "calls": len(result.outcome.calls)},
-            )
-        )
-        budget = synthesis_model.role.profile.input_budget_tokens
-        result.evidence = pack_evidence(selection.goal, result.outcome, budget)
+    recording.chain(trace, result.outcome, catalog)
+    budget = synthesis_model.role.profile.input_budget_tokens
+    result.evidence = pack_evidence(selection.goal, result.outcome, budget)
+    recording.evidence(trace, result.evidence)
 
-    if result.evidence is None:
-        reply = await write_reply(question, synthesis_model, prompts.rendered("conversation"))
-    else:
-        reply = await write_answer(
-            question, result.evidence, synthesis_model, prompts.rendered("synthesis"), today
-        )
+
+async def _write_answer(result: PipelineResult, synthesis_model: ChatModel, prompts) -> None:
+    trace = result.trace
+    with trace.stage("synthesis"):
+        try:
+            if result.evidence is None:
+                reply = await write_reply(result.question, synthesis_model, prompts.rendered("conversation"))
+            else:
+                reply = await write_answer(
+                    result.question,
+                    result.evidence,
+                    synthesis_model,
+                    prompts.rendered("synthesis"),
+                    date.today().isoformat(),
+                )
+        except ModelError as error:
+            recording.model_failure(trace, synthesis_model, "synthesis", error)
+            raise
+    recording.model_reply(trace, synthesis_model, "synthesis", reply)
     result.answer = reply.content.strip()
-    result.steps.append(_model_step("synthesis", reply))
-    return result
-
-
-def _since(started: float) -> int:
-    return round((time.perf_counter() - started) * 1000)
-
-
-def _model_step(name: str, reply: ModelReply | None) -> StepTrace:
-    if reply is None:
-        return StepTrace(name, 0)
-    return StepTrace(
-        name,
-        reply.wall_ms,
-        {
-            "prompt_tokens": reply.prompt_tokens,
-            "estimated_prompt_tokens": reply.estimated_prompt_tokens,
-            "completion_tokens": reply.completion_tokens,
-            "cached_tokens": reply.cached_tokens,
-        },
-    )
+    recording.answer(trace, result.answer)

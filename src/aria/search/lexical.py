@@ -47,6 +47,12 @@ def tool_document(tool: CatalogTool) -> list[str]:
 
 
 def shortlist(question: str, catalog: ToolCatalog, k: int) -> list[str]:
+    ranked = [name for name, _ in rank(question, catalog)]
+    return expand_with_producers(ranked[:k], catalog)
+
+
+def rank(question: str, catalog: ToolCatalog) -> list[tuple[str, float]]:
+    """Every tool sharing a word with the question, best first, with its score."""
     documents = {name: tool_document(tool) for name, tool in catalog.tools.items()}
     if not documents:
         return []
@@ -66,8 +72,8 @@ def shortlist(question: str, catalog: ToolCatalog, k: int) -> list[str]:
         return result
 
     scores = {name: score(name) for name in documents}
-    ranked = sorted((name for name in documents if scores[name] > 0), key=lambda name: (-scores[name], name))
-    return expand_with_producers(ranked[:k], catalog)
+    matching = [name for name in documents if scores[name] > 0]
+    return [(name, scores[name]) for name in sorted(matching, key=lambda name: (-scores[name], name))]
 
 
 def expand_with_producers(names: list[str], catalog: ToolCatalog) -> list[str]:

@@ -26,9 +26,10 @@ BYTES_PER_TOKEN_ESTIMATE = 3
 class ModelError(Exception):
     """A model call failed. `kind` is a stable label for traces and error events."""
 
-    def __init__(self, kind: str, message: str):
+    def __init__(self, kind: str, message: str, status_code: int | None = None):
         super().__init__(message)
         self.kind = kind
+        self.status_code = status_code
 
 
 @dataclass(frozen=True)
@@ -126,7 +127,11 @@ class ChatModel:
                 except httpx.TimeoutException as error:
                     raise ModelError("timeout", f"{self.role.role} model call timed out") from error
         if response.status_code >= 400:
-            raise ModelError("provider_error", f"{self.role.role} model returned HTTP {response.status_code}")
+            raise ModelError(
+                "provider_error",
+                f"{self.role.role} model returned HTTP {response.status_code}",
+                status_code=response.status_code,
+            )
         return response
 
     def _read_reply(self, response: httpx.Response, estimated: int, wall_ms: int) -> ModelReply:

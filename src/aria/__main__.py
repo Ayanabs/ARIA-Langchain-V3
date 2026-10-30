@@ -13,6 +13,7 @@ from aria.settings import ConfigError, Settings, get_settings
 
 EXIT_PREFLIGHT_FAILED = 1
 EXIT_CATALOG_FAILED = 1
+EXIT_ASK_FAILED = 1
 EXIT_CONFIG_ERROR = 2
 
 
@@ -60,63 +61,57 @@ def catalog() -> None:
 
 
 def ask(question: str) -> None:
-    """Answer one question through the full flow and print a trace of each step.
+    """Answer one question through the full flow and print its full trace.
 
-    For local testing: backend calls run as the caller whose token is SPRING_BOOT_CONTRACT_TOKEN.
+    The trace is also saved to the prompt history, where the Admin Console shows it. For local
+    testing, backend calls run as the caller whose token is SPRING_BOOT_CONTRACT_TOKEN.
     """
     from aria.calling.backend import BackendInvoker
     from aria.catalog.service import CatalogService
-    from aria.models.client import ChatModel
+    from aria.models.client import ChatModel, ModelError
+    from aria.observability.store import PromptStore
+    from aria.observability.trace import RequestTrace
     from aria.pipeline import answer_question
 
     settings = _load_settings_or_exit()
     configure_logging("WARNING", settings.secret_values())
+    deployment = settings.deployment
+    caller = deployment.chats.unauthenticated_user_id
+    trace = RequestTrace(question, user_key=caller, username=caller, subject="command line")
 
-    async def run():
-        catalog = await CatalogService(settings).reload()
+    async def run() -> None:
+        with trace.stage("catalog_load"):
+            catalog = await CatalogService(settings).reload()
+        trace.event("catalog_loaded", "Tool catalog loaded", stage="catalog_load", status=catalog.status)
         if catalog.status != "ready":
-            print(f"Tool catalog unavailable: {catalog.error}", file=sys.stderr)
-            sys.exit(EXIT_CATALOG_FAILED)
-        http = settings.deployment.http
-        return await answer_question(
+            trace.add_issue("catalog_unavailable", "request", catalog.error or "")
+            trace.finish("error", failure="catalog_unavailable")
+            return
+        http = deployment.http
+        await answer_question(
             question,
             catalog=catalog,
             tool_model=ChatModel(settings.tool_model, http),
             synthesis_model=ChatModel(settings.synthesis_model, http),
             invoke=BackendInvoker(settings, authorization=settings.contract_headers().get("Authorization")),
-            prompts=settings.deployment.prompts,
-            max_fan_out=settings.deployment.catalog.max_fan_out,
+            prompts=deployment.prompts,
+            max_fan_out=deployment.catalog.max_fan_out,
+            trace=trace,
         )
 
-    result = asyncio.run(run())
-    print(json.dumps(_trace(result), indent=2, ensure_ascii=False, default=str))
-
-
-def _trace(result) -> dict:
-    selection = result.selection
-    outcome = result.outcome
-    return {
-        "question": result.question,
-        "shortlist": result.shortlist,
-        "route": selection.route if selection else None,
-        "goal_tool": selection.goal if selection else None,
-        "arguments": selection.arguments if selection else None,
-        "supplied_keys": {k: v.source for k, v in selection.supplied_keys.items()} if selection else None,
-        "rejected": selection.rejected if selection else None,
-        "plan": [step.tool for step in result.plan.steps] if result.plan else None,
-        "chain": {
-            "status": outcome.status,
-            "reason": outcome.reason,
-            "calls": [{"tool": c.tool, "rows": len(c.rows), "error": c.error} for c in outcome.calls],
-        }
-        if outcome
-        else None,
-        "evidence_rows": {"total": result.evidence.total_rows, "shown": result.evidence.shown_rows}
-        if result.evidence
-        else None,
-        "steps": [{"step": s.step, "wall_ms": s.wall_ms, **s.detail} for s in result.steps],
-        "answer": result.answer,
-    }
+    try:
+        asyncio.run(run())
+    except ModelError:
+        pass  # Recorded in the trace, which is printed below.
+    finally:
+        history = deployment.observability
+        if history.capture_prompts:
+            PromptStore(history.prompt_history_file, history.max_prompts, history.retention_days).append(
+                trace.to_prompt_record()
+            )
+    print(json.dumps(trace.to_prompt_record(), indent=2, ensure_ascii=False, default=str))
+    if trace.status == "error":
+        sys.exit(EXIT_ASK_FAILED)
 
 
 COMMANDS = {"serve": serve, "preflight": preflight, "catalog": catalog}
